@@ -1,0 +1,10 @@
+
+[Unit@UNIT_ID@]
+FileName=@UNIT_FILENAME@
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=

@@ -1,0 +1,287 @@
+# translation of fr.po to french
+# French translations for TWG: Bomberman Classic package
+# Traductions françaises du paquet TWG: Bomberman Classic.
+# Copyright (C) 2007 Games Creators Network
+# This file is distributed under the same license as the TWG: Bomberman Classic package.
+#
+#  <thomas.moulard@games-creators.org>, 2007.
+# Thomas Moulard <thomas.moulard@games-creators.fr>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: fr\n"
+"Report-Msgid-Bugs-To: thomas.moulard@games-creators.org\n"
+"POT-Creation-Date: 2007-07-05 21:51+0200\n"
+"PO-Revision-Date: 2007-07-05 21:52+0200\n"
+"Last-Translator: Thomas Moulard <thomas.moulard@games-creators.fr>\n"
+"Language-Team: french <gcn@games-creators.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n > 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: src/core/application.cc:125
+msgid "Invalid return type."
+msgstr "Type de retour invalide."
+
+#: src/core/application.cc:161 src/core/application.cc:178
+#: src/game/bomb.cc:170 src/graphic/imageelement.cc:173
+msgid "Unexpected error."
+msgstr "Erreur inattendue."
+
+#: src/core/application.cc:173
+msgid "This game mode is not yet implemented."
+msgstr "Ce mode de jeu n'est pas encore implémenté."
+
+#: src/core/configmanager.cc:36
+msgid "Failed to load the configuratin file."
+msgstr "Echec du chargement du fichier de configuration."
+
+#: src/core/configmanager.cc:46
+msgid "Error while loading the configuration file. Root element: "
+msgstr "Echec lors du chargement du fichier de configuration. Racine:"
+
+#: src/core/configmanager.cc:54
+msgid "Invalid version of the configuration file"
+msgstr "Version invalide du fichier de configuration."
+
+#: src/core/configmanager.cc:80
+msgid "The query"
+msgstr "La requête"
+
+#: src/core/configmanager.cc:82
+msgid "has failed."
+msgstr "a échoué"
+
+#: src/core/configmanager.cc:142
+msgid "Can not write the default configuration file."
+msgstr "Impossible d'écrire le fichier de configuration par défaut."
+
+#: src/core/configmanager.cc:228
+msgid "A default configuration file has been generated with success."
+msgstr "Un fichier de configuration par défaut a été généré avec succès"
+
+#: src/core/inputmanager.cc:36
+msgid "Failed to initialize SDL joystick subsystem."
+msgstr "Echec de l'initialisation du sous-système de SDL gérant les joysticks."
+
+#: src/core/inputmanager.cc:45
+msgid "joysticks found."
+msgstr "manettes de jeu trouvées."
+
+#: src/core/inputmanager.cc:47
+msgid "joystick"
+msgstr "manette de jeu"
+
+#: src/core/inputmanager.cc:283
+msgid "Try to access to invalid joystick"
+msgstr "Tentative d'accès à une manette de jeu invalide."
+
+#: src/core/inputmanager.cc:291
+msgid "Failed to open joystick."
+msgstr "Echec lors de l'ouverture de la manette de jeu."
+
+#: src/core/inputmanager.cc:363
+msgid "Invalid key value."
+msgstr "Type de retour invalide."
+
+#: src/game/battleoptionsscene.cc:41
+msgid "Game options"
+msgstr "Options de la partie"
+
+#: src/game/battleoptionsscene.cc:51
+msgid "Game mode"
+msgstr "Mode de jeu"
+
+#: src/game/battleoptionsscene.cc:53
+msgid "Classic"
+msgstr "Classique"
+
+#: src/game/battleoptionsscene.cc:54
+msgid "Survival"
+msgstr "Survie"
+
+#: src/game/battleoptionsscene.cc:67
+msgid "Map"
+msgstr "Carte"
+
+#: src/game/battleoptionsscene.cc:84
+msgid "Player type"
+msgstr "Type de joueur"
+
+#: src/game/battleoptionsscene.cc:86
+msgid "Human"
+msgstr "Humain"
+
+#: src/game/battleoptionsscene.cc:86
+msgid "AI"
+msgstr "IA"
+
+#: src/game/battleoptionsscene.cc:177
+msgid "Can not read the map directory."
+msgstr "Impossible de lire le répertoire des cartes."
+
+#: src/game/battlescene.cc:37
+msgid "Pause"
+msgstr "Pause"
+
+#: src/game/battlescene.cc:76
+msgid "Invalid player inserted."
+msgstr "Joueur invalide inséré."
+
+#: src/game/battlescene.cc:272
+msgid "3"
+msgstr "3"
+
+#: src/game/battlescene.cc:273
+msgid "2"
+msgstr "2"
+
+#: src/game/battlescene.cc:274
+msgid "1"
+msgstr "1"
+
+#: src/game/battlescene.cc:275
+msgid "Go !"
+msgstr "C'est parti!"
+
+#: src/game/block.cc:45
+msgid "The following block has an invalid position"
+msgstr "Le block suivant possède une position invalide."
+
+#: src/game/bomb.cc:74
+msgid "No handle function for this state."
+msgstr "Aucune fonction pour gérer cet état."
+
+#: src/game/bomb.cc:247
+msgid "No available valid animation."
+msgstr "Animation invalide."
+
+#: src/game/bombpowerup.cc:57 src/game/minepowerup.cc:58
+msgid "The following BombPowerUp has an invalid position"
+msgstr "La BombPowerUp suivante a une position invalide."
+
+#: src/game/classicbomb.cc:40
+msgid "The following ClassicBomb has an invalid position"
+msgstr "La ClassicBomb suivante a une position invalide."
+
+#: src/game/devilpowerup.cc:62
+msgid "The following DevilPowerUp has an invalid position"
+msgstr "Le DevilPowerUp suivant a une position invalide."
+
+#: src/game/endofbattlescene.cc:62
+msgid "The winner is"
+msgstr "Le gagnant est"
+
+#: src/game/endofbattlescene.cc:73
+msgid "No winner has been found."
+msgstr "Aucun gagnant n'a été trouvé."
+
+#: src/game/firepowerup.cc:57
+msgid "The following FirePowerUp has an invalid position"
+msgstr "Le FirePowerUp suivant a une position invalide."
+
+#: src/game/followbomb.cc:49
+msgid "The following FollowBomb has an invalid position"
+msgstr "La FollowBomb suivante a une position invalide."
+
+#: src/game/ia/randombehavior.cc:59
+msgid "Invalid movement."
+msgstr "Mouvement invalide."
+
+#: src/game/layer.cc:50 src/game/map.cc:311
+msgid "Error while loading the map."
+msgstr "Error lors du chargement de la carte."
+
+#: src/game/map.cc:237 src/game/map.cc:260
+msgid "Unexpected player id."
+msgstr "Index de joueur inattendu."
+
+#: src/game/map.cc:283
+msgid "Invalid root in XML file. ``"
+msgstr "Racine invalide dans le fichier XML ``"
+
+#: src/game/menuscene.cc:57
+msgid "Normal game"
+msgstr "Jeu classique"
+
+#: src/game/menuscene.cc:58
+msgid "Battle game"
+msgstr "Bataille"
+
+#: src/game/menuscene.cc:59
+msgid "Options"
+msgstr "Options"
+
+#: src/game/menuscene.cc:60
+msgid "Credits"
+msgstr "Remerciements"
+
+#: src/game/menuscene.cc:61
+msgid "Quit"
+msgstr "Quitter"
+
+#: src/game/minebomb.cc:78
+msgid "The following MineBomb has an invalid position"
+msgstr "La MineBomb suivante a une position invalide."
+
+#: src/game/shootpowerup.cc:57
+msgid "The following ShootPowerUp has an invalid position"
+msgstr "Le ShootPowerUp suivant a une position invalide."
+
+#: src/game/speedpowerup.cc:57
+msgid "The following speedpowerup has an invalid position"
+msgstr "Le SpeedPowerUp suivant a une position invalide."
+
+#: src/game/throwpowerup.cc:57
+msgid "The following throwpowerup has an invalid position"
+msgstr "Le ThrowBombPowerUp suivant a une position invalide."
+
+#: src/graphic/graphicmanager.cc:20
+msgid "Failed to initialize SDL."
+msgstr "Echec de l'initialisation de SDL."
+
+#: src/graphic/graphicmanager.cc:26
+msgid "Failed to initialize SDL_ttf."
+msgstr "Echec de l'initialisation de SDL_ttf."
+
+#: src/graphic/graphicmanager.cc:38
+msgid "Invalid resolution."
+msgstr "Animation invalide."
+
+#: src/graphic/graphicmanager.cc:53
+msgid "Failed to load the font."
+msgstr "Impossible de charger la police."
+
+#: src/graphic/graphicmanager.hh:51 src/graphic/graphicmanager.hh:57
+#: src/graphic/graphicmanager.hh:63 src/graphic/graphicmanager.hh:69
+msgid "Blit failed."
+msgstr "La copie de la surface a échoué."
+
+#: src/graphic/gui/choiceelement.cc:81 src/graphic/gui/choiceelement.cc:125
+msgid "Invalid index choice."
+msgstr "Choix d'index invalide."
+
+#: src/graphic/imageelement.cc:142 src/graphic/imageelement.cc:168
+msgid "Invalid animation."
+msgstr "Animation invalide."
+
+#: src/utils/debug.hh:18
+msgid "notice"
+msgstr "remarque"
+
+#: src/utils/debug.hh:19
+msgid "warning"
+msgstr "avertissement"
+
+#: src/utils/debug.hh:20
+msgid "error"
+msgstr "erreur"
+
+#: src/utils/pathmanager.cc:26
+msgid "BinReloc failed to initialize (error code"
+msgstr "Echec de l'initialisation de BinReloc (code d'erreur"
+
+#: src/utils/pathmanager.cc:28
+msgid ")"
+msgstr ")"

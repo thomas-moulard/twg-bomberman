@@ -1,0 +1,5 @@
+		<Unit filename='@UNIT_FILENAME@'>
+			<Option compilerVar='@COMPILER_VAR@'/>
+			<Option target='Development'/>
+			<Option target='Release'/>
+		</Unit>

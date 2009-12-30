@@ -1,0 +1,56 @@
+<?xml version='1.0'?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major='1' minor='6'/>
+	<Project>
+		<Option title='@PROJECT_NAME@'/>
+		<Option makefile='Makefile'/>
+		<Option makefile_is_custom='0'/>
+		<Option active_target='1'/>
+		<Option compiler='0'/>
+		<Build>
+			<Target title='Development'>
+				<Option output='@OUTPUT_NAME@'/>
+				<Option working_dir='.'/>
+				<Option object_output='.objs'/>
+				<Option deps_output='.deps'/>
+				<Option type='@PROJECT_TYPE@'/>
+				<Option compiler='0'/>
+				<Option projectResourceIncludeDirsRelation='1'/>
+				<Compiler>
+					<Add option='-pg'/>
+					<Add option='-g'/>
+				</Compiler>
+				<Linker>
+					<Add option='-pg -lgmon'/>
+				</Linker>
+			</Target>
+			<Target title='Release'>
+				<Option output='@OUTPUT_NAME@'/>
+				<Option working_dir='.'/>
+				<Option object_output='.objs'/>
+				<Option deps_output='.deps'/>
+				<Option type='@PROJECT_TYPE@'/>
+				<Option compiler='0'/>
+				<Option use_console_runner='0'/>
+				<Option projectResourceIncludeDirsRelation='1'/>
+				<Compiler>
+					<Add option='-O3'/>
+					<Add option='-DNDEBUG'/>
+				</Compiler>
+				<Linker>
+					<Add option='-s'/>
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+@COMPILER_OPTIONS@
+		</Compiler>
+		<Linker>
+@LINKER_OPTIONS@
+			<Add directory='.'/>
+		</Linker>
+
+@UNITS@
+	</Project>
+</CodeBlocks_project_file>

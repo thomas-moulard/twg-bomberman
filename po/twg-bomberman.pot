@@ -1,0 +1,283 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Games Creators Network
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: thomas.moulard@games-creators.org\n"
+"POT-Creation-Date: 2007-07-05 21:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/core/application.cc:125
+msgid "Invalid return type."
+msgstr ""
+
+#: src/core/application.cc:161 src/core/application.cc:178
+#: src/game/bomb.cc:170 src/graphic/imageelement.cc:173
+msgid "Unexpected error."
+msgstr ""
+
+#: src/core/application.cc:173
+msgid "This game mode is not yet implemented."
+msgstr ""
+
+#: src/core/configmanager.cc:36
+msgid "Failed to load the configuratin file."
+msgstr ""
+
+#: src/core/configmanager.cc:46
+msgid "Error while loading the configuration file. Root element: "
+msgstr ""
+
+#: src/core/configmanager.cc:54
+msgid "Invalid version of the configuration file"
+msgstr ""
+
+#: src/core/configmanager.cc:80
+msgid "The query"
+msgstr ""
+
+#: src/core/configmanager.cc:82
+msgid "has failed."
+msgstr ""
+
+#: src/core/configmanager.cc:142
+msgid "Can not write the default configuration file."
+msgstr ""
+
+#: src/core/configmanager.cc:228
+msgid "A default configuration file has been generated with success."
+msgstr ""
+
+#: src/core/inputmanager.cc:36
+msgid "Failed to initialize SDL joystick subsystem."
+msgstr ""
+
+#: src/core/inputmanager.cc:45
+msgid "joysticks found."
+msgstr ""
+
+#: src/core/inputmanager.cc:47
+msgid "joystick"
+msgstr ""
+
+#: src/core/inputmanager.cc:283
+msgid "Try to access to invalid joystick"
+msgstr ""
+
+#: src/core/inputmanager.cc:291
+msgid "Failed to open joystick."
+msgstr ""
+
+#: src/core/inputmanager.cc:363
+msgid "Invalid key value."
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:41
+msgid "Game options"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:51
+msgid "Game mode"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:53
+msgid "Classic"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:54
+msgid "Survival"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:67
+msgid "Map"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:84
+msgid "Player type"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:86
+msgid "Human"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:86
+msgid "AI"
+msgstr ""
+
+#: src/game/battleoptionsscene.cc:177
+msgid "Can not read the map directory."
+msgstr ""
+
+#: src/game/battlescene.cc:37
+msgid "Pause"
+msgstr ""
+
+#: src/game/battlescene.cc:76
+msgid "Invalid player inserted."
+msgstr ""
+
+#: src/game/battlescene.cc:272
+msgid "3"
+msgstr ""
+
+#: src/game/battlescene.cc:273
+msgid "2"
+msgstr ""
+
+#: src/game/battlescene.cc:274
+msgid "1"
+msgstr ""
+
+#: src/game/battlescene.cc:275
+msgid "Go !"
+msgstr ""
+
+#: src/game/block.cc:45
+msgid "The following block has an invalid position"
+msgstr ""
+
+#: src/game/bomb.cc:74
+msgid "No handle function for this state."
+msgstr ""
+
+#: src/game/bomb.cc:247
+msgid "No available valid animation."
+msgstr ""
+
+#: src/game/bombpowerup.cc:57 src/game/minepowerup.cc:58
+msgid "The following BombPowerUp has an invalid position"
+msgstr ""
+
+#: src/game/classicbomb.cc:40
+msgid "The following ClassicBomb has an invalid position"
+msgstr ""
+
+#: src/game/devilpowerup.cc:62
+msgid "The following DevilPowerUp has an invalid position"
+msgstr ""
+
+#: src/game/endofbattlescene.cc:62
+msgid "The winner is"
+msgstr ""
+
+#: src/game/endofbattlescene.cc:73
+msgid "No winner has been found."
+msgstr ""
+
+#: src/game/firepowerup.cc:57
+msgid "The following FirePowerUp has an invalid position"
+msgstr ""
+
+#: src/game/followbomb.cc:49
+msgid "The following FollowBomb has an invalid position"
+msgstr ""
+
+#: src/game/ia/randombehavior.cc:59
+msgid "Invalid movement."
+msgstr ""
+
+#: src/game/layer.cc:50 src/game/map.cc:311
+msgid "Error while loading the map."
+msgstr ""
+
+#: src/game/map.cc:237 src/game/map.cc:260
+msgid "Unexpected player id."
+msgstr ""
+
+#: src/game/map.cc:283
+msgid "Invalid root in XML file. ``"
+msgstr ""
+
+#: src/game/menuscene.cc:57
+msgid "Normal game"
+msgstr ""
+
+#: src/game/menuscene.cc:58
+msgid "Battle game"
+msgstr ""
+
+#: src/game/menuscene.cc:59
+msgid "Options"
+msgstr ""
+
+#: src/game/menuscene.cc:60
+msgid "Credits"
+msgstr ""
+
+#: src/game/menuscene.cc:61
+msgid "Quit"
+msgstr ""
+
+#: src/game/minebomb.cc:78
+msgid "The following MineBomb has an invalid position"
+msgstr ""
+
+#: src/game/shootpowerup.cc:57
+msgid "The following ShootPowerUp has an invalid position"
+msgstr ""
+
+#: src/game/speedpowerup.cc:57
+msgid "The following speedpowerup has an invalid position"
+msgstr ""
+
+#: src/game/throwpowerup.cc:57
+msgid "The following throwpowerup has an invalid position"
+msgstr ""
+
+#: src/graphic/graphicmanager.cc:20
+msgid "Failed to initialize SDL."
+msgstr ""
+
+#: src/graphic/graphicmanager.cc:26
+msgid "Failed to initialize SDL_ttf."
+msgstr ""
+
+#: src/graphic/graphicmanager.cc:38
+msgid "Invalid resolution."
+msgstr ""
+
+#: src/graphic/graphicmanager.cc:53
+msgid "Failed to load the font."
+msgstr ""
+
+#: src/graphic/graphicmanager.hh:51 src/graphic/graphicmanager.hh:57
+#: src/graphic/graphicmanager.hh:63 src/graphic/graphicmanager.hh:69
+msgid "Blit failed."
+msgstr ""
+
+#: src/graphic/gui/choiceelement.cc:81 src/graphic/gui/choiceelement.cc:125
+msgid "Invalid index choice."
+msgstr ""
+
+#: src/graphic/imageelement.cc:142 src/graphic/imageelement.cc:168
+msgid "Invalid animation."
+msgstr ""
+
+#: src/utils/debug.hh:18
+msgid "notice"
+msgstr ""
+
+#: src/utils/debug.hh:19
+msgid "warning"
+msgstr ""
+
+#: src/utils/debug.hh:20
+msgid "error"
+msgstr ""
+
+#: src/utils/pathmanager.cc:26
+msgid "BinReloc failed to initialize (error code"
+msgstr ""
+
+#: src/utils/pathmanager.cc:28
+msgid ")"
+msgstr ""

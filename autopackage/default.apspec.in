@@ -1,0 +1,33 @@
+[Meta]
+AutopackageTarget: 1.0
+RootName: @games-creators.org/@PACKAGE_TARNAME@:$SOFTWAREVERSION
+ShortName: @PACKAGE_TARNAME@
+SoftwareVersion: @VERSION@
+DisplayName: Two_Week_Game_Bomberman_Classic
+Summary: A free bomberman clone
+Maintainer: Thomas Moulard <thomas.moulard@games-creators.org>
+Packager: Thomas Moulard <thomas.moulard@games-creators.org>
+Language: fr
+DisplayName[fr]: Two Weeks Game: Bomberman Classic
+Summary[fr]: Un clone de bomberman
+
+[Description]
+A bomberman clone written with SDL.
+
+[BuildPrepare]
+prepareBuild
+
+[BuildUnprepare]
+unprepareBuild
+
+[Globals]
+
+[Imports]
+echo '*' | import
+
+[Prepare]
+
+[Install]
+
+[Uninstall]
+uninstallFromLog

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration version="1.0">
+   <core>
+      <Application>
+         <attribute name="skipIntro_" value="true"              />
+      </Application>
+
+      <InputManager>
+<!--
+         <attribute name="playerKeys_[0][0]" value="SDLJA 0 1 -20000" />
+         <attribute name="playerKeys_[0][1]" value="SDLJA 0 1 20000"  />
+         <attribute name="playerKeys_[0][2]" value="SDLJA 0 0 -20000" />
+         <attribute name="playerKeys_[0][3]" value="SDLJA 0 0 20000"  />
+         <attribute name="playerKeys_[0][4]" value="SDLJB 0 0"        />
+-->
+         <attribute name="playerKeys_[0][0]" value="SDLK_UP"    />
+         <attribute name="playerKeys_[0][1]" value="SDLK_DOWN"  />
+         <attribute name="playerKeys_[0][2]" value="SDLK_LEFT"  />
+         <attribute name="playerKeys_[0][3]" value="SDLK_RIGHT" />
+         <attribute name="playerKeys_[0][4]" value="SDLK_SPACE" />
+
+         <attribute name="playerKeys_[1][0]" value="SDLK_z"     />
+         <attribute name="playerKeys_[1][1]" value="SDLK_s"     />
+         <attribute name="playerKeys_[1][2]" value="SDLK_q"     />
+         <attribute name="playerKeys_[1][3]" value="SDLK_d"     />
+         <attribute name="playerKeys_[1][4]" value="SDLK_f"     />
+
+         <attribute name="playerKeys_[2][0]" value="SDLK_KP8"   />
+         <attribute name="playerKeys_[2][1]" value="SDLK_KP5"   />
+         <attribute name="playerKeys_[2][2]" value="SDLK_KP4"   />
+         <attribute name="playerKeys_[2][3]" value="SDLK_KP6"   />
+         <attribute name="playerKeys_[2][4]" value="SDLK_KP0"   />
+
+         <attribute name="playerKeys_[3][0]" value="SDLK_u"     />
+         <attribute name="playerKeys_[3][1]" value="SDLK_j"     />
+         <attribute name="playerKeys_[3][2]" value="SDLK_h"     />
+         <attribute name="playerKeys_[3][3]" value="SDLK_k"     />
+         <attribute name="playerKeys_[3][4]" value="SDLK_l"     />
+      </InputManager>
+   </core>
+
+   <game>
+      <BattleScene>
+         <attribute name="skipCount_" value="true"              />
+
+         <!-- 120000 ms = 2 min //-->
+         <attribute name="defaultBattleLength" value="120000"   />
+
+         <!-- 60000 ms = 1 min //-->
+         <attribute name="outOfTimeDelay" value="60000"         />
+      </BattleScene>
+
+      <BattleOptionsScene>
+         <attribute name="skip_" value="false"   />
+      </BattleOptionsScene>
+
+      <EndOfBattleScene>
+         <attribute name="skip_" value="true"    />
+      </EndOfBattleScene>
+
+      <Map>
+         <attribute name="renderingZone_.x" value="64"  />
+         <attribute name="renderingZone_.y" value="96" />
+         <attribute name="renderingZone_.w" value="672" />
+         <attribute name="renderingZone_.h" value="480" />
+      </Map>
+
+      <Player>
+         <attribute name="name[0]" value="Kat 1"  />
+         <attribute name="name[1]" value="Kat 2"  />
+         <attribute name="name[2]" value="Kat 3"  />
+         <attribute name="name[3]" value="Kat 4"  />
+
+         <attribute name="sprite_offset_x" value="7"    />
+         <attribute name="sprite_offset_w" value="20"   />
+         <attribute name="sprite_offset_y" value="18"   />
+         <attribute name="sprite_offset_h" value="14"   />
+      </Player>
+   </game>
+
+   <graphic>
+      <GraphicManager>
+         <attribute name="screenWidth" value="800"  />
+         <attribute name="screenHeight" value="600" />
+
+         <attribute name="showdebug" value="true" />
+      </GraphicManager>
+   </graphic>
+
+   <sound>
+   </sound>
+
+   <utils>
+   </utils>
+</configuration>

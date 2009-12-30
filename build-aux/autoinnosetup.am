@@ -1,0 +1,173 @@
+# Autoinnosetup
+# Copyright (C) 2007 Thomas Moulard, Games Creators Network
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+.PHONY: autoinnosetup autoinnosetup-init autoinnosetup-recursive
+
+# Make sure we generate the installer.
+# all:
+# 	@if test `pwd` = `$(am__cd) $(abs_top_builddir) && pwd`; then \
+# 	 $(MAKE) $(AM_MAKEFLAGS) autoinnosetup; \
+# 	fi;
+
+###############################################################################
+## Autoinnosetup entry point.						     ##
+###############################################################################
+autoinnosetup: autoinnosetup-init autoinnosetup-recursive
+
+autoinnosetup-init:
+	@filename="$(top_srcdir)/$(PACKAGE).iss"; \
+	echo "[Setup]" > $$filename; \
+	echo "AppName=$(PACKAGE_NAME)" >> $$filename; \
+	echo "AppVerName=$(PACKAGE_STRING)" >> $$filename; \
+	echo "DefaultDirName={pf}\$(PACKAGE)" >> $$filename; \
+	echo "DefaultGroupName=$(AUTOINNOSETUP_DEFAULTGROUPNAME)" >> $$filename; \
+	echo "Compression=lzma" >> $$filename; \
+	echo "SolidCompression=yes" >> $$filename; \
+	echo "OutputDir=." >> $$filename; \
+	echo "LicenseFile=$(AUTOINNOSETUP_LICENSEFILE)" >> $$filename; \
+	echo "VersionInfoVersion=$(PACAGE_VERSION)" >> $$filename; \
+	echo "VersionInfoDescription=$(PACKAGE_STRING)" >> $$filename; \
+	echo "VersionInfoTextVersion=$(PACKAGE_STRING)" >> $$filename; \
+	echo "VersionInfoCopyright=See the COPYING file." >> $$filename; \
+	echo "AppID={{$(AUTOINNOSETUP_APPID)}" >> $$filename; \
+	echo "VersionInfoCompany=$(AUTOINNOSETUP_COMPANY)" >> $$filename; \
+	echo "AppPublisher=$(AUTOINNOSETUP_PUBLISHER)" >> $$filename; \
+	echo "AppPublisherURL=$(AUTOINNOSETUP_PUBLISHER_URL)" >> $$filename; \
+	echo "AppSupportURL=$(AUTOINNOSETUP_SUPPORT_URL)" >> $$filename; \
+	echo "AppUpdatesURL=$(AUTOINNOSETUP_UPDATES_URL)" >> $$filename; \
+	echo "AppContact=$(PACKAGE_BUGREPORT)" >> $$filename; \
+	echo "" >> $$filename; \
+	echo "[Types]" >> $$filename; \
+	echo "Name: user; Description: Typical install (binary only)." >> $$filename; \
+	echo "Name: full; Description: Install the full project (binary and sources)." >> $$filename; \
+	echo "Name: cust; Description: Custom installation; Flags: iscustom" >> $$filename; \
+	echo "[Components]" >> $$filename; \
+	echo "Name: binaries; Description: Binaries.; Types: user full" >> $$filename; \
+	echo "Name: data; Description: Additionnal data (required).; Types: user full; Flags: fixed" >> $$filename; \
+	echo "Name: sources; Description: Install sources.; Types: full" >> $$filename; \
+	echo "Name: sources/ide; Description: Install IDE files (Devp-C++, Code::Blocks and Visual Studio).; Types: full" >> $$filename; \
+	echo "Name: sources/unix; Description: Install *NIX files (Makefile, etc.).; Types: full" >> $$filename; \
+	echo "Name: doc_dev; Description: Install developement documentation.; Types: full" >> $$filename; \
+	echo "" >> $$filename; \
+	echo "[Languages]" >> $$filename; \
+	echo "Name: english; MessagesFile: compiler:Default.isl" >> $$filename; \
+	echo "Name: basque; MessagesFile: compiler:Languages\Basque.isl" >> $$filename; \
+	echo "Name: brazilianportuguese; MessagesFile: compiler:Languages\BrazilianPortuguese.isl" >> $$filename; \
+	echo "Name: catalan; MessagesFile: compiler:Languages\Catalan.isl" >> $$filename; \
+	echo "Name: czech; MessagesFile: compiler:Languages\Czech.isl" >> $$filename; \
+	echo "Name: danish; MessagesFile: compiler:Languages\Danish.isl" >> $$filename; \
+	echo "Name: dutch; MessagesFile: compiler:Languages\Dutch.isl" >> $$filename; \
+	echo "Name: finnish; MessagesFile: compiler:Languages\Finnish.isl" >> $$filename; \
+	echo "Name: french; MessagesFile: compiler:Languages\French.isl" >> $$filename; \
+	echo "Name: german; MessagesFile: compiler:Languages\German.isl" >> $$filename; \
+	echo "Name: hungarian; MessagesFile: compiler:Languages\Hungarian.isl" >> $$filename; \
+	echo "Name: italian; MessagesFile: compiler:Languages\Italian.isl" >> $$filename; \
+	echo "Name: norwegian; MessagesFile: compiler:Languages\Norwegian.isl" >> $$filename; \
+	echo "Name: polish; MessagesFile: compiler:Languages\Polish.isl" >> $$filename; \
+	echo "Name: portuguese; MessagesFile: compiler:Languages\Portuguese.isl" >> $$filename; \
+	echo "Name: russian; MessagesFile: compiler:Languages\Russian.isl" >> $$filename; \
+	echo "Name: slovak; MessagesFile: compiler:Languages\Slovak.isl" >> $$filename; \
+	echo "Name: slovenian; MessagesFile: compiler:Languages\Slovenian.isl" >> $$filename; \
+	echo "Name: spanish; MessagesFile: compiler:Languages\Spanish.isl" >> $$filename; \
+	echo "" >> $$filename; \
+	echo "[Icons]" >> $$filename; \
+	echo "Name: {group}\View application directory; Filename: {app}; Components: sources; Flags: foldershortcut" >> $$filename; \
+	echo "Name: {group}\Web Site; Filename: $(AUTOINNOSETUP_PUBLISHER_URL); Components: data" >> $$filename; \
+	echo "Name: {group}\Project support; Filename: $(AUTOINNOSETUP_SUPPORT_URL); Components: data" >> $$filename; \
+	if test -n "$(ONLINEDOC_URL)"; then \
+	 echo "Name: {group}\Online documentation; Filename: $(ONLINEDOC_URL); Components: data" >> $$filename; \
+	fi;
+
+autoinnosetup-recursive: $(DISTFILES) $(bin_PROGRAMS)
+	@filename="$(top_srcdir)/$(PACKAGE).iss"; \
+	echo "[Files]" >> $$filename; \
+	srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+	list='$(DISTFILES)'; \
+	  dist_files=`for file in $$list; do echo $$file; done | \
+	  sed -e "s|^$$srcdirstrip/||;t" \
+	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
+	for file in $$dist_files; do \
+	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+	  if test ! -d $$d/$$file; then \
+	    d=`dirname $$d/$$file`; \
+	    file=`basename $$d/$$file`; \
+	    components=''; \
+	    flags=''; \
+	    case "$$d/$$file" in \
+	     *README) \
+	       flags='isreadme'; \
+	     ;; \
+	     *.c|*.h|*.cc|*.hh|*.cpp|*.cxx|*.hxx) \
+	       components='sources'; \
+	     ;; \
+	     *build-aux*|*.am|*.in|*.ac|*.m4|bootstrap|Makefile) \
+	       components='sources/unix'; \
+	     ;; \
+	     *.dev|*.cbp|*.sln|*.vcproj) \
+	       components='sources/ide'; \
+	     ;; \
+	     */doc/*) \
+	       components='doc_dev'; \
+	     ;; \
+	     *.exe|*.dll) \
+	       components='binaries'; \
+	     ;; \
+	     *) \
+	       components='data'; \
+	     ;; \
+	    esac; \
+	    absdir=`$(am__cd) $$d && pwd`; \
+	    abssrcdir=`$(am__cd) $(abs_top_srcdir) && pwd`; \
+	    absbuilddir=`$(am__cd) $(abs_top_builddir) && pwd`;\
+	    destdir=`echo $$absdir | sed -e "s|^$$absbuilddir||;t" -e "s|^$$abssrcdir||;t"`; \
+	    srcdir=`echo $$destdir | sed 's|^[\\/]||g' | sed 's|[\\/]$$||g'`; \
+	    if test -n "$$srcdir"; then srcdir="$$srcdir/"; fi; \
+	    echo "Source: $$srcdir$$file; DestDir:{app}$$destdir; Components: $$components; Flags: $$flags" >> $$filename; \
+	   fi; \
+	done; \
+	for file in "$(bin_PROGRAMS)"; do \
+	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+	  if test ! -d $$d/$$file; then \
+	    d=`dirname $$d/$$file`; \
+	    file=`basename $$d/$$file`; \
+	    components='binaries'; \
+	    flags=''; \
+	    absdir=`$(am__cd) $$d && pwd`; \
+	    abssrcdir=`$(am__cd) $(abs_top_srcdir) && pwd`; \
+	    absbuilddir=`$(am__cd) $(abs_top_builddir) && pwd`;\
+	    destdir=`echo $$absdir | sed -e "s|^$$absbuilddir||;t" -e "s|^$$abssrcdir||;t"`; \
+	    srcdir=`echo $$destdir | sed 's|^[\\/]||g' | sed 's|[\\/]$$||g'`; \
+	    if test -n "$$srcdir"; then srcdir="$$srcdir/"; fi; \
+	     echo "Source: $$srcdir$$file.exe; DestDir:{app}$$destdir; Components: $$components; Flags: $$flags" >> $$filename; \
+             echo "" >> $$filename; \
+             echo "[Icons]" >> $$filename; \
+	     grp=`echo "{group}/$$file" | sed 's|/|\\\|g'`; \
+             echo "Name: $$grp; Filename: {app}$$destdir/$$file.exe; Components: $$components; WorkingDir: {app}$$destdir" >> $$filename; \
+             echo "" >> $$filename; \
+             echo "[Files]" >> $$filename; \
+	   fi; \
+	done; \
+	echo "" >> $$filename; \
+	list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) autoinnosetup-recursive) \
+	      || exit 1; \
+	  fi; \
+	done

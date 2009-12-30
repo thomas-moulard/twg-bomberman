@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ENTITES:
+Ces entités sont en fait des alias, qui permettent de
+modifier le DTD assez facilement.
+-->
+<!ENTITY url        "http://www.games-creatorgs.org/Two_Week_Game">
+<!ENTITY twg        "Two Week Game">
+<!ENTITY % depth    "0|1|2">
+<!ENTITY % def_auth "Anonyme">
+<!ENTITY % def_map  "Carte">
+<!ENTITY % bonus    "bomb  |
+                     mine  |
+                     shoot |
+                     throw |
+                     fire  |
+                     devil |
+                     speed |
+                     block"
+>
+
+<!-- MAP:
+Element racine du fichier de carte.
+Conteneur pour tous les layers de la carte.
+-->
+<!ELEMENT map (layer, layer, layer+)>
+<!ATTLIST map
+	name   CDATA "%def_map;"
+	author CDATA "%def_auth;"
+	width  CDATA #REQUIRED
+	height CDATA #REQUIRED
+>
+
+<!-- LAYER:
+Un layer est une couche, chaque couche est composée d'ImageElement, 
+ou de GameElement.
+Une carte comporte au maximum 3 couches (numérotée de 0 à 2), mais
+vous pouvez faire plusieurs balises layer pour une même couche, elles
+seront assemblées lors du chargement.
+-->
+<!ELEMENT layer (ImageElement* | GameElement*)>
+<!ATTLIST layer
+	id (%depth;) #REQUIRED
+>
+
+<!-- IMAGEELEMENT:
+Un élément image, c'est le plus souvent une simple tile (tuile)
+qui sert comme décors, ou fond pour la carte.
+-->
+<!ELEMENT ImageElement EMPTY>
+<!ATTLIST ImageElement
+	src CDATA #REQUIRED
+	x   CDATA #REQUIRED
+	y   CDATA #REQUIRED
+>
+
+<!-- GAMEELEMENT:
+Ce peut être un bonus, un malus (couche 1), ou un Block (couche 2).
+-->
+<!ELEMENT GameElement EMPTY>
+<!ATTLIST GameElement
+	type (%bonus;) #REQUIRED
+	src  CDATA #IMPLIED
+	x    CDATA #REQUIRED
+	y    CDATA #REQUIRED
+>

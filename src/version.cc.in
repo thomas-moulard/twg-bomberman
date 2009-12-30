@@ -1,0 +1,33 @@
+/**								-*- C++ -*-
+ ** \file version.cc
+ ** \brief Définition communes.
+ */
+
+#include "config.h"
+#include "authors.h"
+
+
+/*------------------------------------.
+| Informations concernant le projet.  |
+`------------------------------------*/
+
+/** Nom du programme.
+
+Soyez certain que cette variable soit utilisable dès le début du projet
+au cas où un constructeur ou un objet statique ait à écrire un message
+d'erreur. */
+const char *program_name = PACKAGE_NAME;
+
+// Chaîne contenant la version du programme.
+const char *program_version =
+"twg-bomberman (" PACKAGE_STRING ")\n"
+"@ID@\n"
+"\n"
+PACKAGE_SHORT_AUTHORS;
+
+// Adresse e-mail pour le report des bugs.
+const char *program_bug_address = PACKAGE_BUGREPORT;
+
+/// Décrit le programme et les arguments acceptés.
+const char *program_doc = "Two Week Game: Bomberman Classic, Copyright (C) 2006 G.C.N.";
+const char *program_args_doc = "INPUT-FILE";

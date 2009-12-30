@@ -1,0 +1,37 @@
+# List of source files which contain translatable strings.
+# Generated: Mon, 02 Jul 2007 21:42:47 +0200
+
+src/core/application.cc
+src/core/configmanager.cc
+src/core/inputmanager.cc
+src/game/battleoptionsscene.cc
+src/game/battlescene.cc
+src/game/block.cc
+src/game/bomb.cc
+src/game/bombpowerup.cc
+src/game/classicbomb.cc
+src/game/devilpowerup.cc
+src/game/endofbattlescene.cc
+src/game/firepowerup.cc
+src/game/followbomb.cc
+src/game/iaplayer.cc
+src/game/ia/randombehavior.cc
+src/game/layer.cc
+src/game/map.cc
+src/game/menuscene.cc
+src/game/minebomb.cc
+src/game/minepowerup.cc
+src/game/shootpowerup.cc
+src/game/speedpowerup.cc
+src/game/throwpowerup.cc
+src/graphic/graphicmanager.cc
+src/graphic/graphicmanager.hh
+src/graphic/gui/choiceelement.cc
+src/graphic/imageelement.cc
+src/sound/soundmanager.cc
+src/utils/debug.cc
+src/utils/debug.hh
+src/utils/gettext.h
+src/utils/gettext.hh
+src/utils/pathmanager.cc
+src/utils/smartpointer.hxx

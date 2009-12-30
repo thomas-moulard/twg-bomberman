@@ -1,0 +1,26 @@
+                            -*- outline -*-
+
+------------------------------------------------------------------------------
+--                    Two Week Game : Bomberman Classic                     --
+--                     http://www.games-creators.org/                       --
+------------------------------------------------------------------------------
+
+* Liste des paquets nécessaires pour le développement sous Linux:
+
+** Développement:
+
+*** automake1.9
+*** libtool
+*** gcc
+
+
+** Documentation:
+
+*** doxygen
+*** graphviz
+
+
+Afin de compiler sur Linux, vous n'avez qu'à tapper à la racine du projet
+cette ligne de comande:
+
+    ./bootstrap && mkdir _build && cd _build && ../configure && make

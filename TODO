@@ -1,0 +1,42 @@
+* Court terme:
+
+- couleur de transparence dans le fichier de configuration.
+- flux special en mode release pour supprimer le debug.
+- migrer vers un SDLGraphicManager.
+- options sur la ligne de commande (dependance sur boost?).
+- integrer une interface utilisateur / scores.
+- endofbattlescene.
+- evoluer battlescene en battlescene "standard" ou bien
+  adopter un pattern strategy pour plugguer les regles de jeu.
+- une IA de base.
+- mode "un joueur" (aventure).
+- options.
+- credits (généré à partir de authors?).
+- scinder le pathmanager pour gerer les fichiers lies a la session
+  utilisateur.
+- paquet autopackage et debian.
+- jeu skinnable.
+- templater la classe de changement de type de bombe pour la generaliser.
+- fusionner UpLayer et DownLayer
+- utiliser boost::timer, boost::filesystem, boost::smart_ptr
+- plusieurs personnages.
+- mode survival (voire les bombes avant la pose).
+- mode canon après la mort.
+- explosion+
+- kick et throw, voire animaux.
+
+* Moyen terme:
+
+- IA plus intelligente
+- mode réseau.
+- verification des cartes via le DTD (et eventuellement le finir).
+- tests unitaires.
+- refactoriser le code gerant les couches basses de gestion memoire.
+- ajouter les differents modes de jeu.
+
+
+* Long terme:
+
+- fournir des services webs pour les jeux (identification des joueurs, etc.).
+- refactoriser la gestion des layers pour les maps.
+- ajouter un OpenGlGraphicManager.

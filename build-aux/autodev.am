@@ -1,0 +1,534 @@
+# Autodev
+# Copyright (C) 2007 Thomas Moulard, Games Creators Network
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+.PHONY: autodev autodev-recursive \
+	autodev-devcpp \
+	autodev-codeblocks \
+	autodev-codeblocks-workspace autodev-codeblocks-workspace-recursive \
+	autodev-codeblocks-workspace-recursive-deps \
+	autodev-codeblocks-project \
+	autodev-vs autodev-vs-sln autodev-vs-vcproj
+
+###############################################################################
+## Autodev entry point.						             ##
+###############################################################################
+autodev: autodev-recursive
+
+autodev-recursive:
+	@list='$(bin_PROGRAMS) $(noinst_LTLIBRARIES) $(lib_LTLIBRARIES)'; \
+	for bin in $$list; do \
+	 internalbin=`echo $$bin | sed 's/[-.]/_/g'`; \
+	 islib=false; \
+	 if test `echo $$bin | grep -c '.la$$'` -ne 0; then \
+	  bin=`echo $$bin | sed 's/.la$$//'`; \
+	  islib=true; \
+	 fi; \
+	 flags="BIN=$$bin INTERNALBIN=$$internalbin ISLIB=$$islib";\
+	 test Makefile -nt '$$bin.dev' \
+	  && $(MAKE) $(AM_MAKEFLAGS) autodev-devcpp $$flags; \
+	 test Makefile -nt '$$bin.cbp' \
+	  && $(MAKE) $(AM_MAKEFLAGS) autodev-codeblocks $$flags; \
+	 test Makefile -nt '$$bin.sln' || test Makefile -nt '$$bin.vcproj' \
+	  && $(MAKE) $(AM_MAKEFLAGS) autodev-vs $$flags; \
+	 \
+	done; \
+	list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) autodev-recursive) \
+	      || exit 1; \
+	  fi; \
+	done
+
+############
+## DevCPP ##
+############
+autodev-devcpp:
+	@filename="$(BIN).dev"; \
+	name="$(BIN)"; \
+	output_name="$(BIN).exe"; \
+	unit_count=0; \
+	unitlist="$(dist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(dist_$(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_HEADERS)"; \
+	compiler=''; \
+	includes=''; \
+	linker=''; \
+	libs=''; \
+	ldflags='$(AUTODEV_LDFLAGS_DEVCPP) $(dist_$(INTERNALBIN)_DEVCPP_LDFLAGS)'; \
+	for arg in "$$ldflags"; do \
+	 case "$$arg" in \
+	  -L*) \
+	   libdir="echo $$arg | sed 's|^-L||'"; \
+	   libs="$$libs;$libdir"; \
+	  ;; \
+	  *) \
+	   linker="$$linker $$arg"; \
+	  ;; \
+	 esac; \
+	done; \
+	cppflags='$(AUTODEV_CPPFLAGS_DEVCPP) $(dist_$(INTERNALBIN)_DEVCPP_CPPFLAGS)'; \
+	for arg in "$$cppflags"; do \
+	 case "$$arg" in \
+	  -I*) \
+	   incdir="echo $$arg | sed 's|^-I||'"; \
+	   includes="$$includes;$incdir"; \
+	  ;; \
+	  *) \
+	   compiler="$$compiler $$arg"; \
+	  ;; \
+	 esac; \
+	done; \
+	\
+	units=''; \
+	for u in $$unitlist; do \
+	 unit_count=$$((unit_count+1)); \
+	 unit=`sed -e "s|@UNIT_ID@|$$unit_count|g" \
+	           -e "s|@UNIT_FILENAME@|$$u|g" \
+	           $(top_srcdir)/build-aux/autodev/devcpp.unit.in`; \
+	 units=`echo "$$units" "$$unit"`; \
+	done; \
+	\
+	units=`echo "$$units" | sed -e 's|$$|\\\\|'`; \
+	version='$(PACKAGE_VERSION)'; \
+	major=$$(echo "$$version" | cut -d'.' -f1); \
+	minor=$$(echo "$$version" | cut -d'.' -f2); \
+	release=$$(echo "$$version" | cut -d'.' -f3); \
+	test -z "$$major" && major=0; \
+	test -z "$$minor" && minor=0; \
+	test -z "$$release" && release=0; \
+	sed  -e "s|@PROJECT_FILENAME@|$$filename|g" \
+	     -e "s|@PROJECT_NAME@|$$name|g" \
+	     -e "s|@UNIT_COUNT@|$$unit_count|g" \
+	     -e "s|@INCLUDES@|$$includes|g" \
+	     -e "s|@LIBRARIES@|$$libs|g" \
+	     -e "s|@COMPILER@|$$compiler|g" \
+	     -e "s|@LINKER@|$$linker|g" \
+	     -e "s|@OUTPUT_NAME@|$$output_name|g" \
+	     -e "s|@UNITS@|$$units \
+|g" \
+	     -e "s|@VERSION_MAJOR@|$$major|g" \
+	     -e "s|@VERSION_MINOR@|$$minor|g" \
+	     -e "s|@VERSION_RELEASE@|$$release|g" \
+	     $(top_srcdir)/build-aux/autodev/devcpp.dev.in > "$$filename";
+
+
+##################
+## Code::Blocks ##
+##################
+#
+# Generate one project per program or LTLIBRARY.
+# Generate one solution per project.
+
+autodev-codeblocks: autodev-codeblocks-workspace autodev-codeblocks-project
+
+autodev-codeblocks-workspace:
+	@if test "$(ISLIB)" = "false"; then \
+	 filename="$(BIN).workspace"; \
+	 name="$(BIN)"; \
+	 \
+	 echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>" > $$filename; \
+	 echo "<CodeBlocks_workspace_file>" >> $$filename; \
+	 echo "	<Workspace title=\"$(BIN)\">" >> $$filename; \
+	 echo "		<Project filename=\"$(BIN).cbp\" active=\"1\">" >> $$filename; \
+	 list="$($(INTERNALBIN)_LDADD) $($(INTERNALBIN)_LIBADD)"; \
+	 list=`echo $$list | sed 's/.la/.cbp/g'`; \
+	 for i in $$list; do \
+	 echo "			<Depends filename=\"$$i\" />" >> $$filename; \
+	 done; \
+	 echo "		</Project>" >> $$filename; \
+	 deps="$($(INTERNALBIN)_LIBADD) $($(INTERNALBIN)_LDADD)"; \
+	 deps=`echo $$deps | sed 's/ /:/g'`; \
+	 flags="FROM=`pwd`/$$filename DEPS=$$deps"; \
+	 dir='$(DIST_SUBDIRS) .'; for subdir in $$dir; do \
+	     (cd $$subdir && \
+	       $(MAKE) $(AM_MAKEFLAGS) $$flags SUBDIR=$$subdir autodev-codeblocks-workspace-recursive) \
+	       || echo abc; \
+	 done; \
+	 echo "	</Workspace>" >> $$filename; \
+	 echo "</CodeBlocks_workspace_file>" >> $$filename; \
+	fi;
+
+# Add project's depencies to the main solution recursively.
+autodev-codeblocks-workspace-recursive:
+	@filename=$(FROM); \
+	deps=`echo $(DEPS) | sed 's/:/ /g'`; \
+	list="$(noinst_LTLIBRARIES) $(lib_LTLIBRARIES)"; \
+	for i in "$$list"; do \
+	 if test `echo "$$deps" | grep -c $$i` -ne 0; then \
+	  internal=`echo $$i | sed 's/[-.]/_/g'`; \
+	  lib=`echo $$i | sed 's/^ //' | sed 's/ $$//'`; \
+	  flags="FROM=$(FROM) SUBDIR=$(SUBDIR) LIB=$$lib INTERNAL=$$internal"; \
+	  $(MAKE) $(AM_MAKEFLAGS) $$flags autodev-codeblocks-workspace-recursive-deps; \
+	 fi; \
+	done;
+
+autodev-codeblocks-workspace-recursive-deps:
+	@filename=$(FROM); \
+	deps="$($(INTERNAL)_LIBADD) $($(INTERNAL)_LDADD)"; \
+	deps=`echo $$deps | sed 's/ /:/g'`; \
+	flags="FROM=$(FROM) DEPS=$$deps"; \
+	list="$($(INTERNAL)_LIBADD) $($(INTERNAL)_LDADD)"; \
+	list=`echo $$list | sed 's/.la/.cbp/g'`; \
+	proj=`echo $(LIB) | sed 's/.la$$/.cbp/g'`; \
+	proj="$(SUBDIR)\\$$proj"; \
+	proj=`echo $$proj | sed 's|/|\\\|g'`; \
+	echo "		<Project filename=\"$$proj\">" >> $$filename; \
+	for i in $$list; do \
+	 i=`echo $$i | sed 's|/|\\\|g'`; \
+	 echo "			<Depends filename=\"$$i\" />" >> $$filename; \
+	done; \
+	echo "		</Project>" >> $$filename; \
+	dir='$(DIST_SUBDIRS) .'; for subdir in $$dir; do \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) $$flags SUBDIR=$(SUBDIR)/$$subdir autodev-codeblocks-workspace-recursive) \
+	      || echo abc; \
+	done;
+
+
+autodev-codeblocks-project:
+	@filename="$(BIN).cbp"; \
+	name="$(BIN)"; \
+	if test "$(ISLIB)" = "false"; then \
+	 output="$(BIN).exe"; \
+	 projecttype='1'; \
+	else \
+	 output="$(BIN).a"; \
+	 projecttype='2'; \
+	fi; \
+	unitlist="$(dist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(dist_$(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_HEADERS)"; \
+	includes='$(AUTODEV_CPPFLAGS_CODEBLOCKS) $(dist_$(INTERNALBIN)_CODEBLOCKS_CPPFLAGS)'; \
+	libs="$(AUTODEV_LDFLAGS_CODEBLOCKS)"; \
+	libs="$$libs $(dist_$(INTERNALBIN)_CODEBLOCKS_LDFLAGS)"; \
+	libs="$$libs $($(INTERNALBIN)_CODEBLOCKS_LDFLAGS)"; \
+	libs="$$libs $(dist_$(INTERNALBIN)_LDADD)"; \
+	libs="$$libs $($(INTERNALBIN)_LDADD)"; \
+	libs="$$libs $(dist_$(INTERNALBIN)_LIBADD)"; \
+	libs="$$libs $($(INTERNALBIN)_LIBADD)"; \
+	\
+	compiler_options=''; \
+	for i in $$includes; do \
+	 case "$$i" in \
+	  -I*) \
+	   i=`echo $$i | sed 's/^-I//'`; \
+	   compiler="			<Add directory='$$i'/>\n"; \
+	  ;; \
+	  *) \
+	   compiler="			<Add option='$$i'/>\n"; \
+	  ;; \
+	 esac; \
+	 compiler_options=`echo "$$compiler_options" "$$compiler"`; \
+	done; \
+	linker_options=''; \
+	for l in $$libs; do \
+	 case "$$l" in \
+	  -L*) \
+	   l=`echo $$l | sed 's/^-L//'`; \
+	   linker="			<Add directory='$$l'/>\n"; \
+	  ;; \
+	  -l*) \
+	   l=`echo $$l | sed 's/^-l//g'`; \
+	   linker="			<Add library='$$l'/>\n"; \
+	  ;; \
+	  *) \
+	   l=`echo $$l | sed 's/.la$$/.a/g'`; \
+	   linker="			<Add library='$$l'/>\n"; \
+	  ;; \
+	 esac; \
+	 linker_options=`echo "$$linker_options" "$$linker"`; \
+	done; \
+	\
+	unit=''; \
+	for u in $$unitlist; do \
+	 compilervar="$$u"; \
+	 case $$compilervar in \
+	  *.c) \
+	   compilervar='CC';; \
+	  *.cc) \
+	   compilervar='CC';; \
+	  *.cpp) \
+	   compilervar='CC';; \
+	  *) \
+	   compilervar='';; \
+	 esac; \
+	 unit=`sed -e "s|@UNIT_FILENAME@|$$u|g" \
+	           -e "s|@COMPILER_VAR@|$$compilervar|g" \
+	           $(top_srcdir)/build-aux/autodev/codeblocks.unit.in`; \
+	 units=`echo "$$units" "$$unit"`; \
+	done; \
+	compiler_options=`echo "$$compiler_options" | sed -e 's|$$|\\\\|'`; \
+	linker_options=`echo "$$linker_options" | sed -e 's|$$|\\\\|'`; \
+	units=`echo "$$units" | sed -e 's|$$|\\\\|'`; \
+	sed  -e "s|@PROJECT_NAME@|$$name|g" \
+	     -e "s|@OUTPUT_NAME@|$$output_name|g" \
+	     -e "s|@PROJECT_TYPE@|$$projecttype|g" \
+	     -e "s|@COMPILER_OPTIONS@|$$compiler_options \
+|g" \
+	     -e "s|@LINKER_OPTIONS@|$$linker_options \
+|g" \
+	     -e "s|@UNITS@|$$units \
+|g" \
+	     $(top_srcdir)/build-aux/autodev/codeblocks.cbp.in > "$$filename";
+
+
+#############################
+## Microsoft Visual Studio ##
+#############################
+autodev-vs: autodev-vs-sln autodev-vs-vcproj
+
+# Visual Studio Solution.
+autodev-vs-sln:
+	@filename="$(BIN).sln"; \
+	projectfilename="$(BIN).vcproj"; \
+	name="$(BIN)"; \
+	echo "﻿" > $$filename; \
+	echo "Microsoft Visual Studio Solution File, Format Version 9.00" >> $$filename; \
+	echo "# Visual C++ Express 2005" >> $$filename; \
+	echo "Project(\"{$(AUTODEV_VS_SLN_GUID)}\") = \"$$name\", \"$$projectfilename\", \"{$(AUTODEV_VS_VCPROJ_GUID)}\"" >> $$filename; \
+	echo "EndProject" >> $$filename; \
+	echo "Global" >> $$filename; \
+	echo "	GlobalSection(SolutionConfigurationPlatforms) = preSolution" >> $$filename; \
+	echo "		Debug|Win32 = Debug|Win32" >> $$filename; \
+	echo "		Release|Win32 = Release|Win32" >> $$filename; \
+	echo "	EndGlobalSection" >> $$filename; \
+	echo "	GlobalSection(ProjectConfigurationPlatforms) = postSolution" >> $$filename; \
+	echo "		{$(AUTODEV_VS_VCPROJ_GUID)}.Debug|Win32.ActiveCfg = Debug|Win32" >> $$filename; \
+	echo "		{$(AUTODEV_VS_VCPROJ_GUID)}.Debug|Win32.Build.0 = Debug|Win32" >> $$filename; \
+	echo "		{$(AUTODEV_VS_VCPROJ_GUID)}.Release|Win32.ActiveCfg = Release|Win32" >> $$filename; \
+	echo "		{$(AUTODEV_VS_VCPROJ_GUID)}.Release|Win32.Build.0 = Release|Win32" >> $$filename; \
+	echo "	EndGlobalSection" >> $$filename; \
+	echo "	GlobalSection(SolutionProperties) = preSolution" >> $$filename; \
+	echo "		HideSolutionNode = FALSE" >> $$filename; \
+	echo "	EndGlobalSection" >> $$filename; \
+	echo "EndGlobal" >> $$filename;
+# unix2dos $$filename > /dev/null 2> /dev/null
+
+
+# Visual Studio Project.
+autodev-vs-vcproj:
+	@filename="$(BIN).vcproj"; \
+	name="$(BIN)"; \
+	output="$(BIN).exe"; \
+	unitlist="$(dist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_SOURCES)"; \
+	unitlist="$$unitlist $(dist_$(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $($(INTERNALBIN)_HEADERS)"; \
+	unitlist="$$unitlist $(nodist_$(INTERNALBIN)_HEADERS)"; \
+	includes='$(AUTODEV_INCLUDEDIRS_VS) $(dist_$(INTERNALBIN)_VS_INCLUDEDIRS)'; \
+	libs='$(AUTODEV_LIBS_VS) $(dist_$(INTERNALBIN)_VS_LIBS)'; \
+	libdirs='$(AUTODEV_LIBDIRS_VS) $(dist_$(INTERNALBIN)_VS_LIBDIRS)'; \
+	\
+	echo "<?xml version=\"1.0\" encoding=\"Windows-1252\"?>" > $$filename; \
+	echo "<VisualStudioProject" >> $$filename; \
+	echo "	ProjectType=\"Visual C++\"" >> $$filename; \
+	echo "	Version=\"8.00\"" >> $$filename; \
+	echo "	Name=\"$$name\"" >> $$filename; \
+	echo "	ProjectGUID=\"{$(AUTODEV_VS_VCPROJ_GUID)}\"" >> $$filename; \
+	echo "	RootNamespace=\"$$name\"" >> $$filename; \
+	echo "	Keyword=\"Win32Proj\"" >> $$filename; \
+	echo "	>" >> $$filename; \
+	echo "	<Platforms>" >> $$filename; \
+	echo "		<Platform" >> $$filename; \
+	echo "			Name=\"Win32\"" >> $$filename; \
+	echo "		/>" >> $$filename; \
+	echo "	</Platforms>" >> $$filename; \
+	echo "	<ToolFiles>" >> $$filename; \
+	echo "	</ToolFiles>" >> $$filename; \
+	echo "	<Configurations>" >> $$filename; \
+	echo "		<Configuration" >> $$filename; \
+	echo "			Name=\"Debug|Win32\"" >> $$filename; \
+	echo "			OutputDirectory=\".\"" >> $$filename; \
+	echo "			ConfigurationType=\"1\"" >> $$filename; \
+	echo "			CharacterSet=\"1\"" >> $$filename; \
+	echo "			>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPreBuildEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCCustomBuildTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCXMLDataGeneratorTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCWebServiceProxyGeneratorTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCMIDLTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCCLCompilerTool\"" >> $$filename; \
+	echo "				Optimization=\"0\"" >> $$filename; \
+	echo "				AdditionalIncludeDirectories=\"$$includes\"" >> $$filename; \
+	echo "				PreprocessorDefinitions=\"WIN32;_DEBUG;_CONSOLE;MSVS8\"" >>$$filename;\
+	echo "				MinimalRebuild=\"true\"" >> $$filename; \
+	echo "				BasicRuntimeChecks=\"3\"" >> $$filename; \
+	echo "				RuntimeLibrary=\"3\"" >> $$filename; \
+	echo "				UsePrecompiledHeader=\"0\"" >> $$filename; \
+	echo "				WarningLevel=\"3\"" >> $$filename; \
+	echo "				Detect64BitPortabilityProblems=\"true\"" >> $$filename; \
+	echo "				DebugInformationFormat=\"4\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCManagedResourceCompilerTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCResourceCompilerTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPreLinkEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCLinkerTool\"" >> $$filename; \
+	echo "				AdditionalOptions=\"/NODEFAULTLIB:LIBCMT\"" >> $$filename; \
+	echo "				AdditionalDependencies=\"$$libs\"" >> $$filename; \
+	echo "				LinkIncremental=\"2\"" >> $$filename; \
+	echo "				AdditionalLibraryDirectories=\"$$libdirs\"" >> $$filename; \
+	echo "				GenerateDebugInformation=\"true\"" >> $$filename; \
+	echo "				SubSystem=\"1\"" >> $$filename; \
+	echo "				TargetMachine=\"1\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCALinkTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCManifestTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCXDCMakeTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCBscMakeTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCFxCopTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCAppVerifierTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCWebDeploymentTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPostBuildEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "		</Configuration>" >> $$filename; \
+	echo "		<Configuration" >> $$filename; \
+	echo "			Name=\"Release|Win32\"" >> $$filename; \
+	echo "			OutputDirectory=\".\"" >> $$filename; \
+	echo "			ConfigurationType=\"1\"" >> $$filename; \
+	echo "			CharacterSet=\"1\"" >> $$filename; \
+	echo "			WholeProgramOptimization=\"1\"" >> $$filename; \
+	echo "			>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPreBuildEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCCustomBuildTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCXMLDataGeneratorTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCWebServiceProxyGeneratorTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCMIDLTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCCLCompilerTool\"" >> $$filename; \
+	echo "				AdditionalIncludeDirectories=\"$$includes\"" >> $$filename; \
+	echo "				PreprocessorDefinitions=\"WIN32;NDEBUG;_CONSOLE;MSVS8\"" >> $$filename; \
+	echo "				RuntimeLibrary=\"2\"" >> $$filename; \
+	echo "				UsePrecompiledHeader=\"0\"" >> $$filename; \
+	echo "				WarningLevel=\"3\"" >> $$filename; \
+	echo "				Detect64BitPortabilityProblems=\"true\"" >> $$filename; \
+	echo "				DebugInformationFormat=\"3\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCManagedResourceCompilerTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCResourceCompilerTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPreLinkEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCLinkerTool\"" >> $$filename; \
+	echo "				AdditionalOptions=\"/NODEFAULTLIB:LIBCMT\"" >> $$filename; \
+	echo "				AdditionalDependencies=\"$$libs\"" >> $$filename; \
+	echo "				LinkIncremental=\"1\"" >> $$filename; \
+	echo "				AdditionalLibraryDirectories=\"$$libdirs\"" >> $$filename; \
+	echo "				GenerateDebugInformation=\"true\"" >> $$filename; \
+	echo "				SubSystem=\"1\"" >> $$filename; \
+	echo "				OptimizeReferences=\"2\"" >> $$filename; \
+	echo "				EnableCOMDATFolding=\"2\"" >> $$filename; \
+	echo "				TargetMachine=\"1\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCALinkTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCManifestTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCXDCMakeTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCBscMakeTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCFxCopTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCAppVerifierTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCWebDeploymentTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "			<Tool" >> $$filename; \
+	echo "				Name=\"VCPostBuildEventTool\"" >> $$filename; \
+	echo "			/>" >> $$filename; \
+	echo "		</Configuration>" >> $$filename; \
+	echo "	</Configurations>" >> $$filename; \
+	echo "	<References>" >> $$filename; \
+	echo "	</References>" >> $$filename; \
+	echo "	<Files>" >> $$filename; \
+	echo "" >> $$filename; \
+	\
+	for u in $$unitlist; do \
+	 echo "		<File" >> $$filename; \
+	 echo "			RelativePath=\"$$u\"" >> $$filename; \
+	 echo "			>" >> $$filename; \
+	 echo "		</File>" >> $$filename; \
+	done; \
+	\
+	echo "" >> $$filename; \
+	echo "	</Files>" >> $$filename; \
+	echo "	<Globals>" >> $$filename; \
+	echo "	</Globals>" >> $$filename; \
+	echo "</VisualStudioProject>" >> $$filename;

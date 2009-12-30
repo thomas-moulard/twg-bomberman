@@ -1,0 +1,2886 @@
+2007-11-05  Thomas Moulard  <thomas@moulard.net>
+
+	Add ebuild.
+	* twg-bomberman-0.1.ebuild: New.
+
+2007-11-05  Thomas Moulard  <thomas@moulard.net>
+
+	Fix test-suite compilation.
+	* src/Makefile.am: Move AM_LDFLAGS...
+	* src/bomberman.mk: ...here.
+
+2007-07-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du fichier game/fws.hh.
+	* src/game/fwd.hh: Ajout un fichier oublie lors des
+        precedents patchs. Nouveau.
+
+2007-07-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Refactorise les mouvements, prepare pour l'ajout du mouvement de tir.
+
+        Ce patch refactorise la methode move afin de preparer la gestion
+        des tirs.
+
+	* src/game/humanplayer.cc: Corrige un bug afin d'appeller soit
+        move avec un mouvement nul, soit avec l'animation "d'ennui".
+	* src/game/player.cc: Refactorise les mouvements, ajoute
+        moveHandleShoot.
+	* src/game/player.hh: Idem.
+	* src/graphic/imageelement.cc: Corrige un bug lie au changement
+        d'animation: le compteur de frame et le timer doivent etre
+        reinitialises.
+
+2007-07-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour de la traduction.
+	* TODO: Suppression de l'item traite.
+	* po/fr.po: Mets a jour le fichier langue.
+	* po/twg-bomberman.pot: Idem.
+	* src/core/inputmanager.cc: Typo.
+	* src/game/battleoptionsscene.cc: Typo.
+
+2007-07-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Corrige les problemes lies a gettext.
+
+        Pour une raison totalement inexpliquee, seul les appels
+        a gettext effectue dans core/application.cc semblent
+        fonctionner. une fonction mygettext a donc ete ajoutee
+        afin d'appeller le "vrai" gettext. Cela semble marcher
+        ce qui va me permettre de travailler sur d'autres aspects
+        en attendant de trouver une meilleure solution.
+
+	* po/fr.po: Mets a jour le fichier langue.
+	* po/twg-bomberman.pot: Mets a jour le fichier squlette.
+	* src/Makefile.am: Deplace LIBADD = LIBINTL vers...
+	* src/bomberman.mk: ...ici.
+	* src/core/application.cc: Ajout de mygettext.
+	* src/core/application.hh: Idem.
+	* src/core/configmanager.cc: Change les gettext() en _().
+	* src/core/inputmanager.cc: Idem.
+	* src/game/battleoptionsscene.cc: Idem.
+	* src/game/battlescene.cc: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/endofbattlescene.cc: Idem.
+	* src/game/firepowerup.cc: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/ia/randombehavior.cc: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/menuscene.cc: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minepowerup.cc: Idem.
+	* src/game/shootpowerup.cc: Idem.
+	* src/game/speedpowerup.cc: Idem.
+	* src/game/throwpowerup.cc: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+	* src/graphic/graphicmanager.hh: Idem.
+	* src/graphic/gui/choiceelement.cc: Idem.
+	* src/graphic/imageelement.cc: Idem.
+	* src/graphic/visualelement.cc: Idem.
+	* src/main.cc: Idem.
+	* src/utils/debug.cc: Idem.
+	* src/utils/debug.hh: Idem.
+	* src/utils/gettext.hh: Idem.
+	* src/utils/pathmanager.cc: Idem.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout des parametres globaux de la carte.
+
+        Ce patch ajoute la gestion des parametres globaux de la carte:
+        - graine du generateur aleatoire pour la carte
+        - repartition des bonii aleatoires
+
+        Voici un exemple de balises desormais supportees:
+
+        <Settings>
+          <RandomSeed value="0" />
+          <ItemProbability type="MinePowerUp" value="5" />
+        </Settings>
+
+	* TODO: Suppression de la tache effectuee.
+	* src/Makefile.am: Supprime un avertissement.
+	* src/core/configmanager.cc: Reformatte.
+	* src/data/map/sample1.xml:
+        Change la carte en utilisant les parametres globaux.
+	* src/data/map/sample2.xml: Ajoute une carte sans obstacles. Nouveau.
+	* src/game/battleoptionsscene.cc,
+	* src/game/battleoptionsscene.hh,
+	* src/game/map.cc,
+	* src/game/map.hh: Gere les parametres globaux.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour des messages.
+	* po/POTFILES.in: Ajoute les nouveaux fichiers a traduire.
+	* po/fr.po: Mets a jour le fichier francais.
+	* po/twg-bomberman.pot: Mets a jour le fichier racine.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Supprime la repetition sur la pose des bombes.
+
+        Desormais, la touche d'action declenche une action lorsqu'elle
+        est relachee et non pas lorsqu'elle est appuyee.
+
+	* src/core/inputmanager.cc,
+	* src/core/inputmanager.hh,
+	* src/game/humanplayer.cc: Ici.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion du rendu de la map dans une zone de l'ecran.
+
+        Ce patch definit des zones "noires" autour de la carte
+        pour placer l'interface.
+
+        Desormais, la fenetre est subdivisee de la maniere suivante:
+
+                      800 px
+                  <------------>
+              / \ -------------- / \
+         96 px |  |            |  |
+              \ / |            |  |
+              / \ |            |  |
+               |  |            |  |
+               |  |            |  |
+        480 px |  |            |  | 600 px
+        =15*32 |  |            |  |
+               |  |            |  |
+              \ / -------------- \ /
+                     <------>
+           672 px = 21 cases * 32 pixels
+
+        Ce patch traduit egalement de nombreux messages d'erreurs,
+        fixe quelques typo et mets a jour la gestion de la resolution
+        via le fichier de configuration.
+
+        En terme de fonctionnement, c'est tres simple: une zone de rendu
+        est ajoute a la classe map. Les valeurs sont importees du
+        fichier de configuration. Tous les objets de la carte ajoutent un
+        decalage equivalent afin de rester dans la zone de rendu.
+
+        La fonction de chargement de la carte loadFromXml contient
+        un parametre supplementaire pour garder en memoire la carte
+        que l'on est en train de creer afin de pouvoir acceder a l'offset.
+
+        Enfin, les positions initiales sont desormais calculees en fonction
+        du decalage de la carte. A terme, il sera possible d'inclure la
+        position initiale des joueurs a la carte afin de pouvoir
+        personnaliser ce comportement.
+
+	* TODO: Mise a jour du fichier.
+	* src/core/application.cc:
+        Utilisation de map::getPlayerInitialPositionX().
+	* src/data/config.xml: Ajoute des informations sur la renderingZone.
+	* src/data/map/sample1.xml: Corrige la taille de la carte.
+	* src/game/backgroundlayer.cc: Gere le rendu sur une zone de l'ecran.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/bombpowerup.hh: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/devilpowerup.hh: Idem.
+	* src/game/downlayer.cc: Idem.
+	* src/game/downlayer.hh: Idem.
+	* src/game/firepowerup.cc: Idem.
+	* src/game/firepowerup.hh: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/gameelement.cc: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.cc: Idem.
+	* src/game/minepowerup.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/powerup.cc: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/shootpowerup.cc: Idem.
+	* src/game/shootpowerup.hh: Idem.
+	* src/game/speedpowerup.cc: Idem.
+	* src/game/speedpowerup.hh: Idem.
+	* src/game/throwpowerup.cc: Idem.
+	* src/game/throwpowerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+	* src/game/updownlayer.hh: Idem.
+	* src/game/uplayer.cc: Idem.
+	* src/game/uplayer.hh: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+	* src/data/img/bg-fixme.png: Fond d'ecran par defaut. Nouveau.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion du rendu de la map dans une zone de l'ecran.
+
+        Ce patch definit des zones "noires" autour de la carte
+        pour placer l'interface.
+
+        Desormais, la fenetre est subdivisee de la maniere suivante:
+
+                      800 px
+                  <------------>
+              / \ -------------- / \
+         96 px |  |            |  |
+              \ / |            |  |
+              / \ |            |  |
+               |  |            |  |
+               |  |            |  |
+        480 px |  |            |  | 600 px
+        =15*32 |  |            |  |
+               |  |            |  |
+              \ / -------------- \ /
+                     <------>
+           672 px = 21 cases * 32 pixels
+
+        Ce patch traduit egalement de nombreux messages d'erreurs,
+        fixe quelques typo et mets a jour la gestion de la resolution
+        via le fichier de configuration.
+
+        En terme de fonctionnement, c'est tres simple: une zone de rendu
+        est ajoute a la classe map. Les valeurs sont importees du
+        fichier de configuration. Tous les objets de la carte ajoutent un
+        decalage equivalent afin de rester dans la zone de rendu.
+
+        La fonction de chargement de la carte loadFromXml contient
+        un parametre supplementaire pour garder en memoire la carte
+        que l'on est en train de creer afin de pouvoir acceder a l'offset.
+
+        Enfin, les positions initiales sont desormais calculees en fonction
+        du decalage de la carte. A terme, il sera possible d'inclure la
+        position initiale des joueurs a la carte afin de pouvoir
+        personnaliser ce comportement.
+
+	* TODO: Mise a jour du fichier.
+	* src/core/application.cc:
+        Utilisation de map::getPlayerInitialPositionX().
+	* src/data/config.xml: Ajoute des informations sur la renderingZone.
+	* src/data/map/sample1.xml: Corrige la taille de la carte.
+	* src/game/backgroundlayer.cc: Gere le rendu sur une zone de l'ecran.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/bombpowerup.hh: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/devilpowerup.hh: Idem.
+	* src/game/downlayer.cc: Idem.
+	* src/game/downlayer.hh: Idem.
+	* src/game/firepowerup.cc: Idem.
+	* src/game/firepowerup.hh: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/gameelement.cc: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.cc: Idem.
+	* src/game/minepowerup.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/powerup.cc: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/shootpowerup.cc: Idem.
+	* src/game/shootpowerup.hh: Idem.
+	* src/game/speedpowerup.cc: Idem.
+	* src/game/speedpowerup.hh: Idem.
+	* src/game/throwpowerup.cc: Idem.
+	* src/game/throwpowerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+	* src/game/updownlayer.hh: Idem.
+	* src/game/uplayer.cc: Idem.
+	* src/game/uplayer.hh: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion du rendu de la map dans une zone de l'ecran.
+
+        Ce patch definit des zones "noires" autour de la carte
+        pour placer l'interface.
+
+        Desormais, la fenetre est subdivisee de la maniere suivante:
+
+                      800 px
+                  <------------>
+              / \ -------------- / \
+         96 px |  |            |  |
+              \ / |            |  |
+              / \ |            |  |
+               |  |            |  |
+               |  |            |  |
+        480 px |  |            |  | 600 px
+        =15*32 |  |            |  |
+               |  |            |  |
+              \ / -------------- \ /
+                     <------>
+           672 px = 21 cases * 32 pixels
+
+        Ce patch traduit egalement de nombreux messages d'erreurs,
+        fixe quelques typo et mets a jour la gestion de la resolution
+        via le fichier de configuration.
+
+        En terme de fonctionnement, c'est tres simple: une zone de rendu
+        est ajoute a la classe map. Les valeurs sont importees du
+        fichier de configuration. Tous les objets de la carte ajoutent un
+        decalage equivalent afin de rester dans la zone de rendu.
+
+        La fonction de chargement de la carte loadFromXml contient
+        un parametre supplementaire pour garder en memoire la carte
+        que l'on est en train de creer afin de pouvoir acceder a l'offset.
+
+        Enfin, les positions initiales sont desormais calculees en fonction
+        du decalage de la carte. A terme, il sera possible d'inclure la
+        position initiale des joueurs a la carte afin de pouvoir
+        personnaliser ce comportement.
+
+	* TODO: Mise a jour du fichier.
+	* src/core/application.cc:
+        Utilisation de map::getPlayerInitialPositionX().
+	* src/data/config.xml: Ajoute des informations sur la renderingZone.
+	* src/data/map/sample1.xml: Corrige la taille de la carte.
+	* src/game/backgroundlayer.cc: Gere le rendu sur une zone de l'ecran.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/bombpowerup.hh: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/devilpowerup.hh: Idem.
+	* src/game/downlayer.cc: Idem.
+	* src/game/downlayer.hh: Idem.
+	* src/game/firepowerup.cc: Idem.
+	* src/game/firepowerup.hh: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/gameelement.cc: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.cc: Idem.
+	* src/game/minepowerup.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/powerup.cc: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/shootpowerup.cc: Idem.
+	* src/game/shootpowerup.hh: Idem.
+	* src/game/speedpowerup.cc: Idem.
+	* src/game/speedpowerup.hh: Idem.
+	* src/game/throwpowerup.cc: Idem.
+	* src/game/throwpowerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+	* src/game/updownlayer.hh: Idem.
+	* src/game/uplayer.cc: Idem.
+	* src/game/uplayer.hh: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+
+2007-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion du rendu de la map dans une zone de l'ecran.
+
+        Ce patch definit des zones "noires" autour de la carte
+        pour placer l'interface.
+
+        Desormais, la fenetre est subdivisee de la maniere suivante:
+
+                      800 px
+                  <------------>
+              / \ -------------- / \
+         96 px |  |            |  |
+              \ / |            |  |
+              / \ |            |  |
+               |  |            |  |
+               |  |            |  |
+        480 px |  |            |  | 600 px
+        =15*32 |  |            |  |
+               |  |            |  |
+              \ / -------------- \ /
+                     <------>
+           672 px = 21 cases * 32 pixels
+
+        Ce patch traduit egalement de nombreux messages d'erreurs,
+        fixe quelques typo et mets a jour la gestion de la resolution
+        via le fichier de configuration.
+
+        En terme de fonctionnement, c'est tres simple: une zone de rendu
+        est ajoute a la classe map. Les valeurs sont importees du
+        fichier de configuration. Tous les objets de la carte ajoutent un
+        decalage equivalent afin de rester dans la zone de rendu.
+
+        La fonction de chargement de la carte loadFromXml contient
+        un parametre supplementaire pour garder en memoire la carte
+        que l'on est en train de creer afin de pouvoir acceder a l'offset.
+
+        Enfin, les positions initiales sont desormais calculees en fonction
+        du decalage de la carte. A terme, il sera possible d'inclure la
+        position initiale des joueurs a la carte afin de pouvoir
+        personnaliser ce comportement.
+
+	* TODO: Mise a jour du fichier.
+	* src/core/application.cc:
+        Utilisation de map::getPlayerInitialPositionX().
+	* src/data/config.xml: Ajoute des informations sur la renderingZone.
+	* src/data/map/sample1.xml: Corrige la taille de la carte.
+	* src/game/backgroundlayer.cc: Gere le rendu sur une zone de l'ecran.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/bombpowerup.hh: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/devilpowerup.hh: Idem.
+	* src/game/downlayer.cc: Idem.
+	* src/game/downlayer.hh: Idem.
+	* src/game/firepowerup.cc: Idem.
+	* src/game/firepowerup.hh: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/gameelement.cc: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.cc: Idem.
+	* src/game/minepowerup.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/powerup.cc: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/shootpowerup.cc: Idem.
+	* src/game/shootpowerup.hh: Idem.
+	* src/game/speedpowerup.cc: Idem.
+	* src/game/speedpowerup.hh: Idem.
+	* src/game/throwpowerup.cc: Idem.
+	* src/game/throwpowerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+	* src/game/updownlayer.hh: Idem.
+	* src/game/uplayer.cc: Idem.
+	* src/game/uplayer.hh: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+
+2007-07-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour de TODO.
+	* TODO: Ici.
+
+2007-07-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fixe un bug dans la gestion des joysticks.
+        Le joystick ouvert etait toujours le 0.
+	* src/core/inputmanager.cc (getJoystick): Ici.
+
+2007-06-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Verifie les valeurs de retour lors des blits.
+	* src/graphic/graphicmanager.hh: Ici.
+
+2007-06-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour du fichier TODO
+	* TODO: Ici.
+
+2007-06-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Factorisation des problemes de portabilite.
+
+        strcasecmp pose un probleme lors de la compilation avec
+        Visual Studio car sa denommination est _stricmp.
+        La macro permettant de resoudre ce probleme est desormais
+        integree a portable.hh. Ces differentes apparitions
+        ont ete factorisees.
+
+	* src/core/application.cc,
+	* src/game/backgroundlayer.cc,
+	* src/game/bomb.cc,
+	* src/game/downlayer.cc,
+	* src/game/layer.cc,
+	* src/game/map.cc,
+	* src/game/powerup.cc,
+	* src/game/updownlayer.cc,
+	* src/game/uplayer.cc: Ici.
+	* src/utils/portable.hh: Ajout de la macro gerant strcasecmp
+                                 sous Visual C++.
+
+2007-06-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Support des fichiers de configuration installes.
+
+        Le jeu cherche desormais au demarrage si /var/games/twg-bomberman
+        existe. Si c'est le cas, tous les fichiers de configuration
+        (ie: "variables") seront pris la-bas. Dans le cas contraire,
+        l'ancien comportement est utilise.
+
+        On notera toutefois que ce dossier est commun a tout le systeme.
+        Il serait sans doute interessant d'introduire une
+        disjonction de cas:
+        - fichier de configuration commun
+        - fichier de configuration propre a l'utilisateur
+
+        On notera egalement le fait que le repertoire d'installation
+        des donnees est en realite "/var/games/" PACKAGE ce qui permets
+        de preserver la genericite de la classe (dans la limite du fait
+        qu'une application generaliste s'installerait plutot dans /var
+        et non /var/games!).
+
+	* src/core/inputmanager.cc: Suppression des messages de debug.
+	* src/utils/debug.cc: Utilise portable.hh.
+	* src/utils/pathmanager.cc: Ajout d'un repertoire d'installation
+                                    pour les fichiers de configuration.
+	* src/utils/portable.hh: Gere les problemes de portabilite. Nouveau.
+
+2007-06-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du support du joystick.
+
+	Le support du joystick se fait en etendant la classe InputManager.
+
+	Desormais, on manipule des key au lieu de simples entiers.
+
+	Les "key" sont des structures pouvant contenir:
+	- une touche clavier
+	- un bouton de joystick
+	- un axe de joystick
+
+	La methode handle de InputManager gere les nouveaux evenements
+	et le format XML de configuration a ete etendu pour gere les
+	nouveaux controles.
+
+	Axe 0 du joystick 0 avec un seuil à 20000:
+         <attribute name="playerKeys_[0][3]" value="SDLJA 0 0 20000"  />
+
+	Bouton 0 du joystick 0:
+         <attribute name="playerKeys_[0][4]" value="SDLJB 0 0"        />
+
+	Ce patch introduit un support totalement fonctionnel des joysticks,
+	une limite est la mauvaise modelisation de cette partie du code
+	et les problemes lies a la non-portabilite des fichiers config.xml.
+
+	Il faudrait egalement gerer les joystick dans les menus.
+	
+	* src/core/inputmanager.cc,
+	* src/core/inputmanager.hh: Ajout du support partiel du joystick.
+	* src/data/config.xml: Ajout d'un exemple de controle du joueur
+			       via un joystick.
+	* src/game/battleoptionsscene.cc,
+	* src/game/endofbattlescene.cc,
+	* src/game/intoscene.cc,
+	* src/game/menuscene.cc,
+	* src/graphic/gui/choiceelement.cc,
+	* src/graphic/gui/choiceelement.hh:
+	Utilise core::InputManager::KeyToKeyboard.
+
+2007-06-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/core/inputmanager.cc,
+	* src/core/inputmanager.hh: Ajout du support partiel du joystick.
+	* utils/debug.cc: Ajout d'une inclusion oubliee.
+
+2007-06-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction de la chaine de compilation Windows.
+	* src/Makefile.am: Reordonnancement des bibliotheques.
+	* src/bomberman.mk: Correction de LOCALEDIR pour Windows.
+	* src/utils/debug.cc: Ajout d'une inclusion oubliee.
+
+2007-06-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de LOCALEDIR pour Windows.
+	* src/bomberman.mk: Ici.
+
+2007-06-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Resolution des problemes de portabilite Win32.
+	* src/Makefile.am: Modification des flags des projets Windows.
+	* src/bomberman.mk: Idem.
+	* src/core/Makefile.am: Prise en compte du renommage.
+	* src/utils/Makefile.am: Idem.
+	* src/core/resourcemanager.cc: Renomme...
+	* src/utils/resourcemanager.cc: ...en ceci.
+	* src/core/resourcemanager.hh: Renomme...
+	* src/utils/resourcemanager.hh: ...en ceci.
+	* src/game/gameelement.hh: Resolution de problemes de portabilite.
+	* src/graphic/graphicmanager.cc: Idem.
+	* src/graphic/imageelement.cc: Idem.
+	* src/graphic/imageelement.hh: Idem.
+	* src/graphic/textelement.cc: Idem.
+	* src/graphic/textelement.hh: Idem.
+	* src/sound/soundmanager.cc: Idem.
+	* src/utils/debug.cc: Idem.
+	* src/utils/smartpointer.hxx: Idem.
+
+2007-06-22  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Corrige le declenchement des bombes en cascade.
+
+        Ce patch corrige les bugs lie au declenchement en cascade
+        des bombes.
+
+        Le probleme vient du fait que pickElement de map ne retourne
+        qu'un element. Or plusieurs bombes sont susceptibles d'etre
+        a la meme position, en particulier a cause du fait qu'aucun
+        nettoyage des bombes explosees n'etait fait. C'est desormais
+        le cas.
+
+	* src/game/bomb.cc: Corrige triggerBomb.
+	* src/game/bomb.hh: Ajout de getState.
+	* src/game/updownlayer.cc: Ajout de cleanup.
+	* src/game/updownlayer.hh: Idem.
+
+2007-06-21  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajoute la resolution du jeu dans le fichier de configuration.
+	* src/data/config.xml: Ajout des attributs.
+	* src/graphic/graphicmanager.cc: Charge la resolution a partir
+                                         du fichier de configuration.
+
+2007-06-21  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Supprime un bug concernant le timer des parties.
+	* configure.ac: Suppression des lignes vides.
+	* src/game/battlescene.cc: Reinitialise le timer juste avant le debut
+                                   de la partie pour eviter. Ainsi le temps
+                                   de chargement n'est pas soustrait au
+                                   temps total de la partie.
+
+2007-06-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Amelioration de l'interface de parametrage des parties.
+
+        Ce patch mets en place un veritable menu de parametrage
+        des parties.
+
+        Desormais le joueur peut parcourir les options et les modifier
+        via l'utilisation des touches claviers.
+
+        Les options reglables sont:
+        - type de partie (seul "classique" est gere pour le moment)
+        - choix de la carte (affiche les fichiers XML du repertoire map)
+        - type de joueur (IA ou humain) pour les quatre joueurs de la partie
+
+        Ces informations sont recuperees au niveau de core::Application
+        et sont utilisees pour initialiser la partie.
+
+        A l'heure actuelle, tous les embranchements sont realises et
+        des stubs sont disponibles pour les cas non-geres.
+
+
+        On note egalement l'arrivee d'un nouveau module "gui" qui permets
+        de creer differents element de menu reutilisables.
+
+        En particulier, ChoiceElement permets de gere les choix dans les menus.
+        On peut changer la reponse parmi celles disponibles avec le clavier.
+
+	* src/core/application.cc: Ajout de removePlayer, les joueurs
+                                   crees dependent du parametrage de la
+                                   partie.
+	* src/core/application.hh: Idem.
+	* src/game/battleoptionsscene.cc: Amelioration de l'interface.
+	* src/game/battleoptionsscene.hh: Idem.
+	* src/graphic/Makefile.am: Ajout des nouveaux fichiers au Makefile.
+	* src/graphic/gui/choiceelement.cc: Ajout de la classe. Nouveau.
+	* src/graphic/gui/choiceelement.hh: Idem. Nouveau.
+	* src/graphic/gui/guielement.cc: Idem. Nouveau.
+	* src/graphic/gui/guielement.hh: Idem. Nouveau.
+	* src/graphic/gui: Ajout du repertoire. Nouveau.
+	* src/graphic/textelement.cc: Ajout de setColor et de refreshSurface.
+	* src/graphic/textelement.hh: Idem.
+
+2007-06-18  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ameliore le support d'Autopackage.
+	* Makefile.am: Ajout de la regle autopackage.
+	* autopackage/default.apspec.in: Suppression d'un warning.
+
+2007-06-18  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Generation d'un fichier de configuration par defaut.
+	* src/Makefile.am: Corrige les dependances sur le binaire.
+	* src/core/configmanager.cc:
+        Ajout de buildDefaultConfigurationFile et isReadable.
+	* src/core/configmanager.hh:
+        Ajout de buildDefaultConfigurationFile et isReadable.
+	* src/data/config.xml:
+        Remplacement du fichier original par le fichier genere.
+
+2007-06-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de PathHandler, migration vers un projet relocalisable.
+
+        Ajout de la classe PathManager qui permets de gerer
+        les paths via binreloc afin de rendre petit a petit
+        le projet relocalisable simplement.
+
+        Ajout egalement d'un fichier spec pour Autopackage
+        afin de pouvoir bientot fournir un paquet Autopackage
+        pour le projet.
+
+        Pour les explications completes concernant le fonctionnement
+        du systeme de fichier Linux, une description resumee est
+        disponible sur le troisieme lien.
+
+        Attention: pour l'instant, il est necessaire de lancer le binaire
+        dans le repertoire ou il a ete produit (ie: ./bomberman quelque
+        soit le repertoire ou il a ete compile).
+
+        Ce petit inconvenient sera regle sous peu.
+
+
+        Attention egalement au changement de syntaxe des noms de fichiers.
+        L'utilisation de PathManager est simple, mais les noms de fichiers
+        doivent commencer par un "/".
+
+        // CORRECT
+        utils::PathManager::getDataFilename("/img/fixme.png");
+
+        // INCORRECT
+        utils::PathManager::getDataFilename("img/fixme.png");
+
+        Une facon de voir cette notation est que data, binary et variable
+        sont trois systemes de fichiers "virtuels", il faut donc redonner
+        un path complet une fois le systeme de fichier "virtuel precise".
+
+
+        A regler: seul "data" est effectivement utilise. Il faut gerer les
+        donnees "variables" afin de pouvoir sauvegarder le fichier de
+        configuration dans le repertoire adequat. Il faut egalement etre
+        en mesure de pouvoir genere un fichier de configuration par defaut
+        s'il n'existe pas.
+
+
+        Concernant le projet Autopackage, le fichier default.apspec genere
+        par Autoconf est correct a part les import.
+        Un .package peut etre genere en tapant a la racine du projet:
+        $ makepackage <path du fichier apspec genere>
+
+        Des efforts restent a realiser pour rendre l'utilisation plus
+        attirante pour les utilisateurs finaux (ajout d'une icone,
+        d'une place dans le menu du Window Manager, etc.).
+
+
+        References:
+        - http://autopackage.org/
+        - http://autopackage.org/docs/binreloc/
+        - http://forum.games-creators.org/showpost.php?p=47459&postcount=21
+
+	* autopackage/default.apspec.in:
+                Debut du support d'autopackage. Nouveau.
+	* autopackage: Idem. Nouveau.
+	* configure.ac: Idem
+	* src/Makefile.am: Ajout d'un lien symbolique vers data.
+	* src/bomberman.mk: Suppresssion de DATA_DIR.
+	* src/core/application.cc: Suppression chdir
+                                   pour acceder aux donnes..
+	* src/core/configmanager.cc: Utilisation de PathHandler
+                                     pour forger un nom de fichier
+                                     complet correct.
+	* src/core/resourcemanager.cc: Idem.
+	* src/game/backgroundlayer.cc: Idem.
+	* src/game/battleoptionsscene.cc: Idem.
+	* src/game/block.cc: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bombpowerup.hh: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/devilpowerup.hh: Idem.
+	* src/game/firepowerup.hh: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/humanplayer.hh: Idem.
+	* src/game/iaplayer.hh: Idem.
+	* src/game/introscene.cc: Idem.
+	* src/game/menuscene.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.hh: Idem.
+	* src/game/shootpowerup.hh: Idem.
+	* src/game/speedpowerup.hh: Idem.
+	* src/game/throwpowerup.hh: Idem.
+	* src/graphic/graphicmanager.cc: Idem.
+	* src/utils/Makefile.am: Ajout des binreloc et de PathManager.
+	* src/data/map/sample1.xml: Changement des paths.
+	* src/utils/binreloc.c: Ajout de BinReloc (version standard). Nouveau.
+	* src/utils/binreloc.h: Idem. Nouveau.
+	* src/utils/debug.hh: Typo.
+	* src/utils/pathmanager.cc: Ajout de la classe. Nouveau.
+	* src/utils/pathmanager.hh: Idem. Nouveau.
+
+2007-06-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout des images pour la mine et le bonus "maudit".
+	* src/data/img/minebomb.png: Ajout de la sprite des mines. Nouveau.
+	* src/data/img/reversepowerup.png: Ajout du bonus "maudit". Nouveau.
+	* src/game/devilpowerup.hh: Utilise la nouvelle image.
+	* src/game/minebomb.cc: Joue l'animation de la mine.
+	* src/game/minebomb.hh: Utilise la nouvelle image.
+	* src/game/player.cc: Reinitialisation du type de bombe lors du
+                              changement de niveau.
+
+2007-05-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajoute la possibilite de definir des personnalites pour l'IA.
+
+        Ce patch ajoute un design pattern Strategy (strategie)
+        afin de gerer differentes personnalites pour l'IA des
+        joueurs.
+
+        Une classe abstraite Behavior a ete cree qui prends en parametre
+        un joueur (le joueur pour lequel un comportement doit etre calcule).
+        Une methode virtuelle play est appelee lorsque l'on souhaite
+        realiser un mouvement.
+
+        La classe RandomBehavior contient l'ancien code qui permettait
+        de generer un mouvement aleatoire.
+
+	* src/game/Makefile.am: Ajout des nouveaux fichiers.
+	* src/game/ia/behavior.cc: Ajout. Nouveau.
+	* src/game/ia/behavior.hh: Ajout. Nouveau.
+	* src/game/ia/randombehavior.cc: Ajout. Nouveau.
+	* src/game/ia/randombehavior.hh: Ajout. Nouveau.
+	* src/game/ia: Ajout. Nouveau.
+	* src/game/iaplayer.cc: Ajout de la gestion des profils d'IA.
+	* src/game/iaplayer.hh: Idem.
+	* src/graphic/imageelement.cc: Corrige la const-ness d'une methode.
+	* src/graphic/imageelement.hh: Idem.
+	* src/utils/gettext.hh: Suppression des warnings pour gettext.h.
+
+2007-05-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gere les super-bombes et les reactions en chaine partiellement.
+
+        Le but de ce patch est double:
+        1/ changer le gameplay afin qu'une bombe ne puisse detruire qu'un
+        niveau de bloc a la fois (une fois qu'une explosion a detruit un bloc,
+        elle s'arrete).
+
+        2/ qu'une explosion declenche l'explosion de toutes les bombes
+        qu'elle rencontre (le squelette du code est OK, mais cela
+        ne fonctionne pas encore).
+
+        Concernant le point n 1, la notion de super-bombes a ete introduite
+        afin de pouvoir gerer le concept. Une super-bombe ne respecte
+        pas la contrainte expliquee alors que les autres bombes oui.
+
+	* src/game/bomb.cc: Gerer les super-bombes et les reactions en chaine.
+	* src/game/bomb.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/player.hh: Idem.
+
+2007-05-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion des touches simultanees.
+
+        L'utilisation d'un switch/case empechait la gestion d'appui
+        sur plusieurs touches en meme temps. Ce probleme est regle.
+        Il a egalement revele un bug dans la gestion de isMoving()
+        qui est lui aussi resolu.
+
+	* src/game/humanplayer.cc: Ici.
+
+2007-05-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction (finale!) des collisions.
+
+        Ce patch corrige le dernier probleme lie aux collisions.
+        En effet, le probleme principal etait de differencier
+        les endroits ou l'on passait les points en bas a gauche
+        des sprites (x+w-1,y+h-1) des endroits ou l'on devait
+        passer la hauteur/largeur (w,h). De ce fait, l'on teste
+        bien le point a l'extremite du sprite tout en restant
+        a l'interieur ce qui n'etait pas le cas.
+
+	* src/game/map.cc (isEscapingFromCollision): Corrige un
+        bug dans la gestion des collisions.
+
+2007-05-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction des collisions.
+	* src/data/config.xml: Modification du formattage.
+	* src/game/map.cc: Ajout de pickElement, corrige validPosition
+                           et isEscapingFromCollision.
+	* src/game/map.hh: Idem.
+	* src/game/player.cc: Correction de move.
+	* src/game/updownlayer.hh: Ajout d'un accesseur sur elements_.
+
+2007-05-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modifications diverses.
+
+        Amelioration des collisions.
+        Les joueurs meurt quand un bloc tombe sur lui suite au
+        passage en "ouf ot time".
+        Le joueur IA a ete re-active afin de pouvoir tester les collisions
+        en profondeur.
+
+	* src/core/application.cc: Ajout d'un joueur IA.
+	* src/game/battlescene.cc: Mort des joueurs si un bloc leur tombe
+                                   dessus.
+	* src/game/map.cc: Amelioration des collisions.
+	* src/game/map.hh: Idem.
+	* src/game/player.cc: Idem.
+
+2007-05-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction du bug des collisions.
+
+        Ce patch vise a ajouter une methode qui indique si le mouvement
+        est en passe de regler le probleme de collision ou pas.
+        L'heuristique devrais permettre d'estimer si un mouvement devrait
+        etre autorise ou pas, cependant certains tests ne fonctionnent
+        toujours pas.
+
+        Pour rappel, le but est de desactiver temporairement les collisions
+        si un joueur se trouve instantanement au-dessus d'un objet non-
+        traversable (apres la pose d'une bombe par exemple).
+
+	* src/game/map.cc: Ajout de isEscapingFromCollision.
+	* src/game/map.hh: Idem.
+	* src/game/player.cc: Appel de la fonction isEscapingFromCollision.
+
+2007-05-21  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de printCollisionMap.
+
+        Ajout d'une methode a Map qui permets de generer une
+        carte des collisions (quelle tuile peut etre traversee?)
+        afin de faciliter le debuggage.
+
+	* src/game/map.cc: Ajout de printCollisionMap.
+	* src/game/map.hh: Idem.
+
+2007-05-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion de differents types de bombe.
+
+        Ce patch permets de gerer differents types de bombes.
+        En particulier, les mines sont desormais gerees.
+
+        Le principe de fonctionnement de la mine est la suivante:
+        la bombe est invisible. Une fois posee, elle s'active apres
+        un certain delai. Si un joueur passe sur la mine ce delai
+        ecoule, elle apparait a l'ecran et explose apres un autre
+        delai.
+
+        Pour gerer plusieurs type de mines, il faut que le joueur
+        garde un pointeur vers une fonction qui permets de creer les
+        bombes. Dans la mesure ou il est impossible d'obtenir un
+        pointeur sur un constructeur, une methode statique supplementaire
+        est necessaire.
+
+	* src/data/map/sample1.xml: Ajout du PowerUp.
+	* src/game/bomb.cc: Refactorisation.
+	* src/game/bomb.hh: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/humanplayer.cc: Ameliore la surete du code.
+	* src/game/map.cc: Ajout de isSameTile.
+	* src/game/map.hh: Idem.
+	* src/game/minebomb.cc: Ajout du code.
+	* src/game/minebomb.hh: Idem.
+	* src/game/minepowerup.cc: Ajout du code lors de la prise
+                                   du PowerUp.
+	* src/game/player.cc: Gere differents type de bombes.
+	* src/game/player.hh: Idem.
+	* src/game/updownlayer.cc: Modifie l'appel a HandleStates.
+
+2007-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout d'un outil de traduction.
+
+        Ajout d'un script detectant les appels a GetText afin
+        d'automatiser la maintenance du fichier POTFILES.in
+        qui recense les fichiers sources contenant des chaines
+        a traduire.
+
+        Une facon correcte de regenerer le fichier est la suivante:
+        $ cd trunk
+        $ ./tool/get-translatable-files.sh -g && mv POTFILES.in po
+
+	* po/POTFILES.in: Mise a jour via le script.
+	* po/fr.po: Mise a jour auto.
+	* po/twg-bomberman.pot: Idem.
+	* tools/get-translatable-files.sh: Ajout du script. Auto.
+
+2007-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Refactorisation de BattleScene.
+
+        Correction du code gerant la pause et factorisation de
+        code.
+
+	* src/game/battlescene.cc: Refactorisation du code.
+	* src/game/battlescene.hh: Idem.
+
+2007-05-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Reorganisation de BattleScene.
+
+        Le but de ce patch est de reorganiser la classe BattleScene en
+        creant plusieurs methodes privees qui redecoupent et simplifie
+        play. De plus, une valeur de configuration nomme skipCount_ a
+        ete ajoutee afin de pouvoir passer le compteur lors des phases
+        de debug.
+
+	* src/data/config.xml: Ajout de skipCount_.
+	* src/game/battlescene.cc: Reorganisation globale.
+	* src/game/battlescene.hh: Idem.
+	* src/game/humanplayer.cc: Suppression de l'appel a render dans play.
+	* src/game/iaplayer.cc: Idem.
+
+2007-05-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de la gestion du temps des batailles.
+
+        Ce patch ajoute la gestion du temps aux batailles.
+        Une duree totale par defaut est enregistree dans le fichier xml.
+        A partir d'un certain point de la partie (lorsqu'il reste moins
+        d'un certain nombre de secondes), la bataille passe en mode
+        "outoftime" et le borde de la carte se remplit de blocs.
+
+        A l'heure actuelle, deux elements doivent etre corriges:
+        - les blocs qui tombent sur destructibles ce qui ne devrait
+        pas etre le cas.
+        - les blocs tombent instantanement sans animation, il sera necessaire
+        de realiser une transition plus souple lors du changement de mode.
+
+	* src/data/config.xml: Ajout du temps de partie et du delay
+                               afin de passer en outoftime.
+	* src/game/backgroundlayer.hh: Indetation.
+	* src/game/battlescene.cc: Ajout de la gestion du temps.
+	* src/game/battlescene.hh: Idem.
+
+2007-05-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du menu de parametrage des combats.
+
+        Ce patch ajoute la scene de parametrage des combats
+        qui permets de choisir la carte, le mode de jeu  et
+        le type des joueurs (humain/IA/off).
+
+        InputManager a egalement ete modifie afin de quitter
+        l'application en cas d'evenement SDL_QUIT.
+
+	* src/core/application.cc: Correction de l'appel a
+                                   BattleOptionsScene.
+	* src/core/inputmanager.cc: Quitte l'applicatinon lors
+                                    d'un evenement SDL_QUIT.
+	* src/data/config.xml: Ajout des attributs manquants.
+	* src/game/battleoptionsscene.cc: Ajout du contenu.
+	* src/game/battleoptionsscene.hh: Idem.
+
+2007-05-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du codde de EndOfBattleScene.
+
+        La classe EndOfBattleScene affiche dans la fenetre les
+        scores affiches jusqu'alors dans la console. L'attribut
+        skip_ permet de desactiver l'affichage des scores. Cet
+        attribut est modifiable a partir du fichier de configuration
+        XML.
+
+	* src/data/config.xml: Ajout des valeurs de configuration
+                               de la classe.
+	* src/game/endofbattlescene.cc: Ajout du code.
+	* src/game/endofbattlescene.hh: Ajout de l'attribut skip_.
+
+2007-05-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction et redecoupage de l'enchainement des scenes.
+
+        Le code de Application a ete redecoupe et la
+        determination du vainqueur a ete deleguee a
+        endofbattlescene.
+
+	* src/core/application.cc: Ajout de intro et menu.
+	* src/core/application.hh: Idem.
+	* src/game/battleoptionsscene.cc: Ajout de play.
+	* src/game/battleoptionsscene.hh: Idem.
+	* src/game/endofbattlescene.cc: Ajout de play.
+	* src/game/endofbattlescene.hh: Idem.
+
+2007-05-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ameliore le script de generation des classes.
+
+        Ce patch ameliore le script de generation des classes
+        en generant automatiquement des "stubs" pour le
+        constructeur, destructeur et operateur de construction
+        par copie.
+
+        Une nouvelle scene a egalement ete ajoutee.
+
+	* src/game/Makefile.am: Ajout du nouveau fichier source.
+	* src/game/battleoptionsscene.cc: Ajout d'une classe vide. Nouveau.
+	* src/game/battleoptionsscene.hh: Idem. Nouveau.
+	* tools/GenerateSkeleton.sh: Generation de stubs.
+
+2007-05-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Redecoupe la classe Application.
+	* src/core/application.cc: Redecoupe la classe.
+	* src/core/application.hh: Idem.
+	* src/game/bomb.cc: Des-inline le code.
+	* src/game/bomb.hh: Idem.
+
+2007-05-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Corrige un bug lors du calcul des collisions.
+	* src/game/map.cc: Ici.
+
+2007-05-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Nettoyage du code.
+
+        Ce patch consiste en deux ameliorations majeures:
+        - passage des "valeurs magiques" dans le fichier de
+          configuration (offset des sprite par exemple)
+        - nettoyage des warning. Il ne reste aucun warning lie
+          au jeu en lui-meme, gettext en genere quelques-uns qu'il
+          faudra neutraliser.
+
+        La carte comporte desormais un powerup "devail" qui inverse
+        les commandes.
+
+	* Makefile.am: .
+	* src/Makefile.am: .
+	* src/core/application.cc: Utilisation de ConfigManager
+                                   pour recuperer skipIntro.
+	* src/core/configmanager.cc: Ajout de fonctions d'aide.
+	* src/core/configmanager.hh: Idem.
+	* src/core/inputmanager.cc: Gestion de l'inversion des
+                                    commandes.
+	* src/core/inputmanager.hh: Idem.
+	* src/data/config.xml: Ajout des offsets et de skipIntro.
+	* src/data/map/sample1.xml: Ajout d'un powerup "devil".
+	* src/game/backgroundlayer.hh: Correction des warnings.
+	* src/game/battlescene.cc: Idem.
+	* src/game/battlescene.hh: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/devilpowerup.cc: Idem.
+	* src/game/introscene.cc: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/menuscene.cc: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/player.hh: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+
+2007-05-08  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion des touches via le fichier de configuration.
+
+        Les touches des joueurs sont desormais modifiables via le
+        fichier de configuration.
+        Les touches sont lues a partir du fichier et stocke dans
+        un tableau bidimensionnel.
+
+	* src/core/inputmanager.cc: Gestion des touches via le ConfigManager.
+	* src/core/inputmanager.hh: Ajout du tableau stockant les touches.
+	* src/data/config.xml: Correction du fichier de configuration.
+
+2007-05-08  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du gestionnaire de fichier de config.
+	* src/core/application.cc: Charge le fichier de config.
+	* src/core/configmanager.cc: Ajout le contenu de la classe.
+	* src/core/configmanager.hh: Idem.
+	* src/core/inputmanager.cc: Ajout stringToKey.
+	* src/core/inputmanager.hh: Idem.
+	* src/data/map/sample1.xml: Correction d'element invalide.
+	* src/game/bomb.hh: Correction de bugs.
+	* src/game/player.hh: Idem.
+
+2007-05-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du fichier de configuration par defaut.
+
+        Le fichier de configuration a ete reorganise afin de
+        pouvoir etre plus facilement extensible.
+
+        De maniere generale, il reprends la meme hierarchie
+        que les classes C++.
+
+        Si l'on veut indiquer des informations pour l'InputManager:
+
+        <core>
+                <inputmanager>
+                        <attribute name="myAttribute" value="12345" />
+                </inputmanager>
+        </core>
+
+	* src/data/config.xml: Ici.
+
+2007-05-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout des nouveaux graphismes.
+	* po/POTFILES.in: Ajout d'un nouveau fichier.
+	* po/fr.po: Modificiation de la traduction.
+	* po/twg-bomberman.pot: Idem.
+	* src/data/img/Block2.png: Obsolete. Suppression.
+	* src/data/img/block0.png: Remplacement de l'image.
+	* src/data/img/block1.png: Idem.
+	* src/data/img/speedpowerup.png: Idem.
+	* src/data/img/explosion.png: Idem.
+	* src/data/img/ground1.png: Idem.
+	* src/data/img/block2.png: Ajout de l'image. Nouveau.
+	* src/data/img/block3.png: Idem. Nouveau.
+	* src/data/img/block4.png: Idem. Nouveau.
+	* src/data/img/bombpowerup.png: Remplacement de l'image.
+	* src/data/img/classicbomb.png: Ajout de l'image. Nouveau.
+	* src/data/img/crate0.png: Idem. Nouveau.
+	* src/data/img/crate1.png: Idem. Nouveau.
+	* src/data/img/firepowerup.png: Idem. Nouveau.
+	* src/data/img/ground0.png: Idem. Nouveau.
+	* src/data/img/ground2.png: Idem. Nouveau.
+	* src/data/img/ground3.png: Idem. Nouveau.
+	* src/data/img/ground4.png: Idem. Nouveau.
+	* src/data/img/sprite_bomberman.png: Obsolete. Suppression.
+	* src/data/img/sprite_bomberman_jaune.png: Obsolete. Suppression.
+	* src/data/map/sample1.xml: Modification de la carte.
+	* src/game/block.hh: Changement du nom du fichier.
+	* src/game/bomb.cc: Gestion de l'animation de la bombe.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/firepowerup.hh: Changement de l'image.
+	* src/game/iaplayer.cc: Utilisation du nouveau sprite pour l'IA.
+	* src/game/iaplayer.hh: Idem.
+
+2007-05-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Integration du nouveau sprite de joueur.
+
+        Ce patch integre le sprite de Tof.
+        Deux nouveaux mouvements sont integres:
+        - idle,
+        - die.
+
+        Idle est une animation de yoyo qui est jouee quand
+        le joueur ne fait rien. Pour cela, on a ajoute un timer
+        dans player.hh qui active l'animation quand le joueur
+        reste inactive plus de 10 secondes.
+
+        Die est l'animation jouee lors de la mort. Dans la mesure
+        ou le sprite n'est plus affiche quand isAlive faut false,
+        isAlive n'est modifie qu'apres la fin de l'animation par
+        la methode play. Elle empeche egalement tout mouvement
+        durant cette animation.
+
+        Les modifications liees a imageelement permettent de definir
+        des longueurs d'animation, a la main et diferentes selon
+        l'animation. En effet, l'animation de mort est bien plus
+        longue que les autres et on ne peut plus se fonder sur
+        un nombre de frame egal quelque soit l'animation.
+
+        De nouveaux getter/setter ont ete ajoute et le bug des
+        explosion a ete corrige (elles n'etaient pas toujours animees
+        correctement).
+
+	* po/POTFILES.in: Ajout de fichiers a traduire.
+	* po/fr.po: Ajout de traductions.
+	* po/twg-bomberman.pot: Ajout de phrases a traduire.
+	* src/data/img/kat.png: Ajout du nouveau sprite. Nouveau.
+	* src/game/humanplayer.cc: Gestion des nouvelles animations.
+	* src/game/humanplayer.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/player.hh: Idem.
+	* src/graphic/imageelement.cc: Ajout de getter/setter necessaires
+                                       aux nouvelles animations.
+	* src/graphic/imageelement.hh: Idem.
+
+2007-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction de l'i18n.
+	* po/POTFILES.in: Ajout de utils/debug.hh.
+	* po/fr.po: Ajout de traductions.
+	* po/twg-bomberman.pot: Idem.
+	* src/bomberman.mk: Utilisation du path detecte.
+	* src/core/application.cc: Refonte de la classe de menu.
+	* src/game/menuscene.cc: Idem.
+	* src/game/menuscene.hh: Idem.
+	* src/utils/debug.hh: Ajout de phrases traduites.
+
+2007-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction du patch precedent.
+	* src/utils/gettext.h: Ajout du fichier. Nouveau.
+	* src/utils/gettext.hh: Idem. Nouveau.
+
+2007-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction de l'i18n.
+	* po/LINGUAS: Ajout du fichier. Nouveau.
+	* po/Makevars: Utilise l'adresse e-mail de support fourni
+                       par le configure.ac.
+	* po/fr.po: Extension de la traduction.
+	* po/twg-bomberman.pot: Idem.
+	* src/Makefile.am: Ajout de LIBINTL.
+	* src/bomberman.mk: Correction du repertoire localedir.
+
+2007-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de l'internationalisation.
+	* po/POTFILES.in: Ajout des fichiers a traduire.
+	* po/fr.po: Ajout de la langue francaise. Nouveau.
+	* po/twg-bomberman.pot: Ajout du fichier squelette. Nouveau.
+	* src/bomberman.mk: Ajout du -DLOCALEDIR.
+	* src/core/application.cc: Ajout des traductions.
+	* src/game/battlescene.cc: Idem.
+	* src/game/menuscene.cc: Idem.
+
+2007-05-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de gettext.
+	* ABOUT-NLS: Nouveau.
+	* ChangeLog: Ajout automatique.
+	* Makefile.am: Modification automatique.
+	* config.guess: Nouveau.
+	* config.sub: Nouveau.
+	* configure.ac: Modification automatique.
+	* po/ChangeLog: Nouveau.
+	* po/Makefile.in.in: Nouveau.
+	* po/Makevars: Nouveau.
+	* po/POTFILES.in: Nouveau.
+	* po/Rules-quot: Nouveau.
+	* po/boldquot.sed: Nouveau.
+	* po/en@boldquot.header: Nouveau.
+	* po/en@quot.header: Nouveau.
+	* po/insert-header.sin: Nouveau.
+	* po/quot.sed: Nouveau.
+	* po/remove-potcdate.sin: Nouveau.
+	* po: Nouveau.
+
+2007-05-02  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* build-aux/gettext.m4: New file, from gettext-0.16.1.
+	* build-aux/iconv.m4: New file, from gettext-0.16.1.
+	* build-aux/lib-ld.m4: New file, from gettext-0.16.1.
+	* build-aux/lib-link.m4: New file, from gettext-0.16.1.
+	* build-aux/lib-prefix.m4: New file, from gettext-0.16.1.
+	* build-aux/nls.m4: New file, from gettext-0.16.1.
+	* build-aux/po.m4: New file, from gettext-0.16.1.
+	* build-aux/progtest.m4: New file, from gettext-0.16.1.
+	* Makefile.am (SUBDIRS): Add po.
+	(EXTRA_DIST): Add build-aux/config.rpath.
+	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
+
+2007-05-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction de differentes failles de securite.
+	* src/core/application.cc: Ajout d'un std::endl oublie.
+	* src/core/configmanager.cc: Simplifie considerablement le code
+                                     et supprime une faille de securite
+                                     en utilisant la STL.
+	* src/game/battlescene.cc: Suppression d'un tableau statique
+                                   sensible aux depassement de buffer
+                                   par un std::vector.
+	* src/game/player.cc: Suppression de l'affichage de debug.
+	* src/sound/sound.cc: Refonte du module.
+	* src/sound/sound.hh: Idem.
+	* src/utils/debug.cc: Comble une faille de securite,
+                              on test si trace.txt est un fichier
+                              regulier.
+	* src/utils/debug.hh: Converison des accents.
+
+2007-05-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout d'une IA simple, de la repetition des parties et des scores.
+
+        Ce patch introduit plusieurs changements sans liens:
+        - gestion du deplacement d'un troisieme joueurs
+        - retour au menu apres la fin d'une partie
+        - gestion et affichage du score (dans la console pour l'instant).
+        - debut d'IA, dont le principe est:
+          * je me deplace dans une direction aleatoire.
+          * si je suis bloque, je fais demi-tour.
+          * avec une proba de 1/100, je change de sens sans raison.
+          * avec une proba de 1/50, je pose une bombe.
+          Au passage, le quatrieme joueur est devenu une IA.
+          Il va sans dire qu'un algo aussi simple abouti a un suicide de l'IA
+          apres un court laps de temps! A ameliorer donc... :)
+        - amelioration du placement des bombes et correction des collisions.
+
+	* src/core/application.cc: Gestion des scores et du retour
+                                   au menu a la fin de la partie.
+	* src/core/inputmanager.cc: Ajout du joueur 3.
+	* src/game/bomb.hh: Correction des collisions.
+	* src/game/iaplayer.cc: Debut d'IA.
+	* src/game/iaplayer.hh: Idem.
+	* src/game/player.cc: Generation du nom par defaut, 
+                              amelioration du placement des bombes
+                              et correction de bugs dans les collisions.
+	* src/game/player.hh: Idem.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour des externals.
+
+        Mets a jour les externals afin de propager la correction
+        de l'erreur dans le Doxyfile.in. Desormais la documentation
+        est correctement generee.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Amelioration de la gestion des explosions et des joueurs.
+
+        Ce patch ajoute la gestion des animations de l'explosion.
+        Desormais, trois images differentes sont utilisees dans
+        les explosions:
+
+            1
+            1
+          22X22
+            1
+            1
+
+        Avec 1,2 et X trois images differentes.
+
+        De plus, la position de depart des joueurs est desormais geree.
+
+        --------
+        |1    2|
+        |      |
+        |3    4|
+        --------
+
+	* src/core/application.cc: Ajout des quatre joueurs de base
+                                   a leurs coordonnees respectives.
+	* src/data/img/explosion.png: Ajout de l'image. New.
+	* src/data/map/sample1.xml: Modification de la carte pour preserver
+                                    les zones de depart.
+	* src/game/bomb.cc: Definit les animations de la bombe.
+	* src/game/bomb.hh: Idem (et modifie la duree de l'explosion).
+	* src/game/classicbomb.cc: Modification de la gestion de l'explosion
+                                   pour gerer les flammes d'une maniere plus
+                                   realiste.
+	* src/game/humanplayer.cc: Ajout des positions de depart.
+	* src/game/humanplayer.hh: Idem.
+	* src/game/iaplayer.hh: Idem.
+	* src/game/map.hh: Ajout d'accessseurs pour obtenir la taille
+                           de la carte.
+	* src/game/player.cc: Ajoute la gestion de la position de depart.
+	* src/game/player.hh: Idem.
+	* src/graphic/imageelement.hh: Ajoute le modificateur de frameLength.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Amelioration des collisions.
+
+        Lors du calcul des collisions pour determiner si un objet
+        est touche, on prends desormais en compte les marges du sprite.
+
+	* src/game/updownlayer.cc: Ici.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout d'un PowerUp de puissance sur la carte.
+	* src/data/map/sample1.xml: Ajout d'un PowerUp.
+	* src/game/firepowerup.cc: Corrige l'indentation.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modification des explosions.
+
+        Desormais les explosions ne traversents plus les blocs
+        indestructibles.
+        Pour se faire, il faut ajouter une propriete isDestructible
+        dans les hierarchies de classes et changer la maniere de
+        generer les explosions.
+
+	* src/game/backgroundlayer.cc: Ajout isDestructible.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/block.hh: Idem.
+	* src/game/bomb.cc: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/updownlayer.cc: Idem.
+	* src/game/updownlayer.hh: Idem.
+	* src/game/classicbomb.cc: Modifie la generation des explosions
+                                   pour ne pas passer au travers des
+                                   blocs indestructibles.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gere le nombre max de bombes posees simultanement.
+
+        Afin de gerer les power-up associes a chaque bombe,
+        il est important que chacune d'entre elle soit associee
+        au joueur qui l'a posee. De ce fait, un attribut owner_
+        a ete ajoute.
+
+        D'autre part, un attribut fire_ qui indique la puissance
+        de la bombe, prends la valeur de owner_->fire a la
+        construction de l'objet (en effet, la puissance de la
+        bombe corresponds aux items recuperes par le joueur au
+        moment de la pose de la bombe, pas de l'explosion!).
+
+        De ce fait, il est facile de gere un compteur de bombe qui
+        indique combien de bombes sont actuellement posees et qui
+        permets de limiter le nombre de bombes simultanees.
+
+	* src/game/bomb.cc: Ajout l'owner.
+	* src/game/bomb.hh: Idem (ajout des attributs owner_ et fire_).
+	* src/game/bombpowerup.cc: Idem.
+	* src/game/classicbomb.cc: Idem.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/followbomb.cc: Idem.
+	* src/game/followbomb.hh: Idem.
+	* src/game/minebomb.cc: Idem.
+	* src/game/minebomb.hh: Idem.
+	* src/game/player.cc: Ajoute la limitation.
+	* src/game/player.hh: Idem.
+	* src/game/powerup.hh: Correction d'un bug afin d'eviter qu'un objet
+                               puisse etre pris plusieurs fois.
+
+2007-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction des collisions.
+
+        Ce patch resouds le probleme des collisions lorsqu'une bombe
+        est posee.
+
+        En effet, lorsque l'on pose une bombe, on ajoute un GameElement
+        infranchissable "sous" soit. De ce fait, on ne peut plus se
+        deplacer et la defaite est immediate.
+
+        Pour eviter ce probleme, il faut autoriser les deplacements a
+        l'interieur d'elements infranchissables lorsque:
+
+        A/ au debut du tour, le joueur est deja en collision avec cet
+           element.
+
+        B/ le mouvement reste dans la meme "case" ou bien sort vers une
+           case ou le deplacement est autorisee.
+
+	* src/game/player.cc: Ici.
+
+2007-04-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modification de la carte.
+
+	* src/data/map/sample1.xml: Ajout de blocs.
+
+2007-04-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion de la destruction des blocs.
+
+        handleStates supprime les blocs de la carte qui sont en collision
+        avec l'explosion, pour cela, on a besoin d'une reference vers
+        BattleScene.
+
+        Pour se faire, on appelle handleStates dans handleEvents (ce
+        qui n'est pas le mieux en terme de modelisation, il faudra sans
+        doute ameliorer cette partie).
+
+        handleStates appelle Map::removeBlocks qui delegue la suppression
+        aux differentes couches. removeBlocks parcourt le tableau de
+        GameElement afin de supprimer les blocs correspondants.
+
+	* src/game/backgroundlayer.hh: Ajoute un bouchon pour removeBlocks.
+	* src/game/classicbomb.cc: Modifie handleStates pour gerer les
+                                   destructions (appelle removeBlocks).
+	* src/game/classicbomb.hh: Idem.
+	* src/game/layer.hh: Ajoute la methode abstraite removeBlocks.
+	* src/game/map.cc: Ajout removeBlocks.
+	* src/game/map.hh: Idem.
+	* src/game/updownlayer.cc: .
+	* src/game/updownlayer.hh: Ajoute removeBlocks.
+
+2007-04-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout du controle du second joueur.
+	* src/core/application.cc: Ajoute l'id a la creation du joueur.
+	* src/core/inputmanager.cc: Ajoute le controle du second joueur.
+	* src/game/battlescene.cc: Simplifie play.
+	* src/game/battlescene.hh: Modifie la constness de nbAlive.
+	* src/game/humanplayer.cc: Ajout l'id.
+	* src/game/humanplayer.hh: Idem.
+	* src/game/iaplayer.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/player.hh: Idem.
+
+2007-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion des collisions avec les explosions.
+
+        Ce patch change la modelisation de la facon suivante:
+        - les methodes isWalkable des GameElement prennent des coordonnees
+        et les verifient si ces coordonnes peuvent bouger. Les anciennes
+        methodes indiquaient simplement si l'on pouvait, ou pas, marcher
+        sur ce GameElement.
+        - ajout de deux methodes collide dans GameElement afin de factoriser
+        les calculs de collision.
+        - une methode isTouched est ajoutee a la hierarchie des GameElement 
+        afin d'indiquer si des coordonnes "touchent" l'element.
+        Cette distinction n'etait pas realisee et empechait de gerer proprement
+        les explosions. En effet, on peut passer a travers une explosion, meme
+        si cela entraine la mort du joueur. Dans ce cas precis, on peut toucher
+        l'objet sans etre en collision avec lui.
+        Plus clairement, cela veut dire que l'on peut desormais gere les cas
+        ou certains objets ne provoquent pas de collision (on peut passer au
+        travers).
+
+	* src/game/block.hh: Modification de isWalkable.
+	* src/game/bomb.hh: Corrige isWalkable.
+	* src/game/gameelement.hh: Corrige les constness de certains
+                                   accesseurs. Ajoute collide et is Touched.
+	* src/game/powerup.hh: Corrige isWalkable. Ajout isTouched.
+	* src/game/updownlayer.cc: Corrige isWalkable et is Touched. Delegue
+                                   l'implementation aux GameElements.
+
+2007-04-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction des explosions.
+
+        Les sprites des explosions sont correctement ajoutes et geres.
+
+	* src/game/bomb.hh: Correction du type du conteneur.
+	* src/game/classicbomb.cc: Correction des explosions.
+	* src/utils/smartpointer.hxx: Typo.
+	* tests/utils/Makefile.am: Ajout du test.
+	* tests/utils/smartpointer1.cc: Teste avec un SmartPointer sur une classe
+                                        realise des allocations.
+
+2007-04-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de la gestion des explosions.
+
+        Ce patch ajoute la gestion des explosions.
+        Les bombes contiennent desormais trois etats:
+        - en attente: le compte a rebours defile, la bombe va exploser,
+        - la bombe explose: l'explosion est en cours,
+        - la bombe a explosee: l'explosion est finie.
+
+        Dans l'etat 2, tout contact est mortel.
+        Durant les etapes 2 et 3 la bombe n'est plus visible.
+
+        L'evenement OnTouch verifie si lorsqu'il y a contact alors que la bombe
+        est dans l'etat 2 alors le joueur meurt.
+
+        Attention: les explosions ne sont pas encore visibles a l'ecran car
+        l'ajout d'elements au vecteur explosion_ provoque une erreur interne
+        du gestionnaire de ressources. Le code sera decommente lorsque le bug
+        aura ete isole et corrige.
+
+	* src/game/bomb.cc: Modifie le constructeur pour initialiser
+                            les nouveaux attributs..
+	* src/game/bomb.hh: Ajoute le type BombeState et les attributs
+                            state_ et timer_.
+	* src/game/classicbomb.cc: Ajoute handleStates.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/player.hh: Ajout die.
+	* src/graphic/visualelement.hh: Ajoute isVisible.
+	* src/utils/timemanager.hh: Ajoute getDelay et isPaused.
+
+2007-04-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Typo.
+	* src/game/bomb.hh: Correction de l'indentation.
+	* src/game/classicbomb.hh: Idem.
+	* src/game/classicbomb.cc: Typo.
+
+2007-04-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion de la pose des bombes.
+
+        Desormais, le joueur peut poser des bombes en appuyant
+        sur la touche d'action (espace par defaut, la touche
+        pause etant deplacee sur 'p').
+
+        Pour gerer la pose des bombes, un cas a ete ajoute dans
+        le switch play qui effectue les actions selon l'etat du clavier.
+        Play appelle putBomb qui se charge d'ajouter la bombe.
+
+        Pour se faire, il appelle la methode pushGameElement dans
+        la classe UpDownLayer qui lui permets d'ajouter une bombe
+        a l'endroit voulu de la carte.
+
+        Il est a noter que le placement de la bombe n'est pas tres realiste.
+
+        Notamment, un cas specifique de bomberman est assez difficile a gerer.
+        En effet, on ne peut pas traverser les bombes sauf celles que l'on
+        vient de poser afin de pouvoir "sortir" de la bombe.
+        Ce cas specifique n'est pas gere et pour l'instant la bombe
+        est placee a gauche du joueur quel que soit sa direction.
+
+        Un point a ameliorer dans les futures revisions.
+
+	* src/core/inputmanager.cc: Ajout du bouton d'action.
+	* src/core/inputmanager.hh: Idem.
+	* src/game/gameelement.hh: Ajout de l'accesseur getSprite.
+	* src/game/humanplayer.cc: Ajout de l'appel a putBomb dans Play.
+	* src/game/map.hh: Ajout de getLayers.
+	* src/game/player.cc: Ajout de putBomb.
+	* src/game/player.hh: Idem.
+	* src/game/updownlayer.hh: Ajout de pushGameElement.
+
+2007-04-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de PowerUp a la map de test.
+
+        Ajout de PowerUp de vitesse afin de verifier que
+        les effets des items sont appliques correctement
+        (et c'est le cas).
+
+        Un recadrage des valeurs afin d'ameliorer le gameplay
+        est a prevoir, mais n'est pas critique a l'heure actuelle.
+
+	* src/data/map/sample1.xml: Ici.
+
+2007-04-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion des PowerUps, ajout de l'evenement onTouch.
+
+        Ce commit ajoute la gestion des PowerUps.
+
+        Un evenement OnTouch a ete ajoute a la classe GameElement
+        afin de pouvoir gerer la prise des powerups.
+
+        Des bouchons par defaut ont ete definis dans les clases n'utilisant
+        pas cet evenement afin d'implementer cette methode abstraite.
+
+        Attention: meme si les PowerUp sont pris, il ne sont que masques.
+        Ce n'est pas un probleme a l'heure actuelle car on considere que
+        l'ensemble des PowerUps sont repartis au lancement du niveau et
+        s'ils peuvent se deplacer, il ne peut pas y en avoir de nouveaux.
+
+	* src/game/battlescene.hh: getPlayers() renvoit une reference
+                                   non-constante.
+	* src/game/block.hh: Ajout d'un bouchon pour onTouch.
+	* src/game/bomb.hh: Idem.
+	* src/game/gameelement.hh: Ajout du typedef players_t.
+	* src/game/powerup.hh: Ajout de onTouch qui appelle take.
+	* src/game/updownlayer.cc: Ajout de onTouch, qui est gere
+                                   par handleEvents.
+
+2007-04-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Ajout de UpDownLayer.
+
+        Ce commit remplace takePowerUp par une approche plus generaliste
+        a base d'evenements.
+
+        Chaque couche dispose d'une methode handleEvents qui a pour
+        but de gerer tous les types d'evenements (en appelant la
+        methode de GameElement correspondante).
+
+        Map possede la meme methode qui delegue la tache aux layers.
+
+        BattleScene desormais appelle Map::handleEvents a chaque tour
+        de boucle.
+
+        De plus, une classe intermediaire UpDownLayer a ete ajoutee
+        afin de resoudre le probleme de modelisation apportee par
+        la factorisation de la methode isWalkable. Le code commun
+        a Up and Down est desormais regroupe dans cette classe.
+
+                          /Layer/
+                          / \ / \
+                           |   |
+                           |   |
+              BackgroundLayer /UpDownLayer/
+                                / \   / \
+                                 |     |
+                          DownLayer   UpLayer
+
+	* src/game/Makefile.am: Ajout de UpDownLayer.cc.
+	* src/game/backgroundlayer.cc: Ajout de HandleEvents.
+	* src/game/backgroundlayer.hh: Idem.
+	* src/game/battlescene.cc: Appelle HandleEvents au lieu de takePowerUp.
+	* src/game/downlayer.cc: Ajout de HandleEvents.
+	* src/game/downlayer.hh: Idem.
+	* src/game/gameelement.hh: Correction des commentaires.
+	* src/game/layer.cc: Ajout de HandleEvents.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Ajout de HandleEvents.
+	* src/game/map.hh: Idem.
+	* src/game/updownlayer.cc: Ajout d'une classe intermediaire permettant
+                                   de factoriser du code. Nouveau.
+	* src/game/updownlayer.hh: Idem. Nouveau.
+	* src/game/uplayer.cc: Ajout de HandleEvents.
+	* src/game/uplayer.hh: Idem.
+
+2007-04-18  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction des collisions.
+
+        Ce patch corrige les collisions en testant les valeurs
+        intermediaires de deplacement si un mouvement complet
+        est impossible. Ie: si on se deplace de 8 en 8 et que
+        seul pixel est disponible avant un obstacle, on ne
+        stoppe pas le deplacement, mais on se deplace de 7
+        pixels.
+
+        On teste egalement si les coordonnees du personnage sont
+        bien positives afin d'eviter les debordements sur les
+        unsigned qui conduisaient a des comportements aberrants.
+
+	* src/game/backgroundlayer.cc: Mise en page.
+	* src/game/player.cc: Correction des collisions.
+	* src/game/player.hh: Correction des marges.
+
+2007-04-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Gestion des marges.
+
+        Afin de gerer precisement les collisions, un champ
+        offsets a ete ajoute a la classe ImageElement afin
+        de representer les "marges" qui sont presentes
+        autour du sprite, c'est a dire les parties de l'image
+        qui sont inutilisees (et donc transparentes).
+
+        Ces marges sont utilisees lors du calcul des collisions
+        afin de ne refuser le mouvement que si une partie /HORS/
+        des marges entre en contact avec un obstacle.
+
+	* src/game/player.cc: Definit les marges du sprite, prends
+          en compte les sprites lors du calcul de collision.
+	* src/game/player.hh: Ajoute les valeurs de l'offset(1).
+	* src/graphic/imageelement.cc: Ajout d'offsets_ dans la liste
+          d'initialisation du constructeur.
+	* src/graphic/imageelement.hh: Ajout de l'attributs offsets_ et des
+          getter/setter associes.
+
+          (1) De maniere generale, l'utilisation de "magic constants"
+          (constantes magiques) est /A PROSCRIRE/ dans le corps de fonctions.
+          Cela a pour effet de rendre le code moins lisible et donc moins
+          maintenable.
+
+          Au lieu de cela, preferez l'utilisation de constantes definies via
+          des macros (mal!), des attributs ou bien des methodes inlinees (bien!).
+
+2007-04-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modification du README.
+
+        Il est plus propre de creer un dossier _build dans le
+        repertoire du projet et d'executer le configure a
+        l'interieur de ce dernier.
+
+        De ce fait, les fichiers generes et les fichiers distribues
+        ne sont plus melanges.
+
+	* README: Ici.
+
+2007-04-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction des collisions.
+
+        Reecriture du code de maniere plus lisible.
+        En generale les optimisations utilisant des operateurs
+        binaires a la place de l'arithmetique classique sont
+        a proscrire: ils obscurcissent le code et sont de toutes
+        facons realisees par le compilateur.
+
+        De graves problemes de modelisations sont apparus lors de
+        factorisation de code, ils seront corrige dans les prochains
+        commit.
+
+	* src/game/backgroundlayer.cc: Reecriture du code.
+	* src/game/backgroundlayer.hh: Idem.
+
+2007-04-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modification des flags de compilation Windows.
+	* src/Makefile.am: Ici.
+	* src/bomberman.mk: Ici.
+
+2007-04-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modification de la chaine de compilation Windows.
+	* src/Makefile.am: Correction des flags de compilation.
+	* src/bomberman.mk: Idem.
+	* src/core/Makefile.am: Idem.
+	* src/core/application.cc: Idem.
+	* src/game/Makefile.am: Idem.
+	* src/graphic/Makefile.am: Idem.
+	* src/sound/Makefile.am: Idem.
+	* src/utils/Makefile.am: Idem.
+
+2007-04-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Inclusions des fichiers du framework dans les fichiers Automake.
+	* Makefile.am: Ici.
+	* src/Makefile.am: Ici.
+	* src/core/Makefile.am: Ici.
+	* src/game/Makefile.am: Ici.
+	* src/graphic/Makefile.am: Ici.
+	* src/sound/Makefile.am: Ici.
+	* src/utils/Makefile.am: Ici.
+	* tests/Makefile.am: Ici.
+	* tests/utils/Makefile.am: Ici.
+
+2007-04-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Correction du fichier Autoconf.
+	* configure.ac: Changement du prefixe. Suppression de
+        la generation du Makefile de build-aux.
+
+2007-04-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Mise a jour du bit d'execution de bootstrap.
+
+2007-04-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Utilisation des scripts Autotools communs.
+
+        Attention: le repertoire handbook devra etre migre ailleurs
+        le systeme actuel prevoit une redaction separee de la documentation
+        utilisateur sur le wiki afin de maximiser la documentation presente
+        sur ce dernier. La documentation du wiki est recuperee lors de la
+        generation de la documentation.
+
+	* bootstrap: Utilise build-aux/bootstrap.
+	* build-aux/Makefile.am: Obsolete. Suppression.
+	* build-aux/move-if-change: Obsolete. Suppression.
+	* build-aux/warning.m4: Obsolete. Suppression.
+	* build-aux: Obsolete. Suppression.
+	* configure.ac: .
+	* doc/Doxyfile.in: Obsolete. Suppression.
+	* doc/Makefile.am: Obsolete. Suppression.
+	* doc/handbook/Makefile: Obsolete. Suppression.
+	* doc/handbook/but.tex: Obsolete. Suppression.
+	* doc/handbook/compiler.tex: Obsolete. Suppression.
+	* doc/handbook/conclusion.tex: Obsolete. Suppression.
+	* doc/handbook/environnement.tex: Obsolete. Suppression.
+	* doc/handbook/handbook.tex: Obsolete. Suppression.
+	* doc/handbook/intro.tex: Obsolete. Suppression.
+	* doc/handbook/modelisation.tex: Obsolete. Suppression.
+	* doc/handbook/outils.tex: Obsolete. Suppression.
+	* doc/handbook/participer.tex: Obsolete. Suppression.
+	* doc/handbook: Obsolete. Suppression.
+	* doc: Obsolete. Suppression.
+	* src/proj/CodeBlocks/Pack_SDL_CB.rar: Obsolete. Suppression.
+	* src/proj/CodeBlocks/README.txt: Obsolete. Suppression.
+	* src/proj/CodeBlocks/twg_bomberman.cbp: Obsolete. Suppression.
+	* src/proj/CodeBlocks: Obsolete. Suppression.
+	* src/proj/DevCpp/Bomberman.dev: Obsolete. Suppression.
+	* src/proj/DevCpp/obj: Obsolete. Suppression.
+	* src/proj/DevCpp: Obsolete. Suppression.
+	* src/proj/Visual Studio 8/README.txt: Obsolete. Suppression.
+	* src/proj/Visual Studio 8/twg_bomberman.sln: Obsolete. Suppression.
+	* src/proj/Visual Studio 8/twg_bomberman.vcproj: Obsolete. Suppression.
+	* src/proj/Visual Studio 8: Obsolete. Suppression.
+	* src/proj: Obsolete. Suppression.
+
+2007-04-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Modifications des collisions, corrections de diverses erreurs.
+	* src/data/map/sample1.xml: Repartition des blocs sur les layers.
+	* src/game/battlescene.cc: Corrections (collisinons, power-ups).
+	* src/game/block.hh: Idem.
+	* src/game/bomb.hh: Idem.
+	* src/game/downlayer.cc: Idem.
+	* src/game/downlayer.hh: Idem.
+	* src/game/gameelement.hh: Idem.
+	* src/game/humanplayer.cc: Idem.
+	* src/game/layer.cc: Idem.
+	* src/game/layer.hh: Idem.
+	* src/game/map.cc: Idem.
+	* src/game/map.hh: Idem.
+	* src/game/player.cc: Idem.
+	* src/game/player.hh: Idem.
+	* src/game/powerup.hh: Idem.
+	* src/game/uplayer.cc: Idem.
+	* src/game/uplayer.hh: Idem.
+	* src/graphic/imageelement.hh: Idem.
+	* src/graphic/visualelement.hh: Idem.
+
+2007-04-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Changement du repertoire de travail.
+
+        Le repertoire courant est desormais data et tous les chemins
+        doivent se calculer a partir de ce dernier.
+
+	* src/Makefile.am: Correction diverses.
+	* src/bomberman.mk: Ajout de -DDATA_DIR indiquant la position
+                            du repertoire data pendant le developpement.
+	* src/core/application.cc: Changement des chemins.
+	* src/core/resourcemanager.cc: Changement des chemins.
+	* src/data/map/sample1.xml: Changement des chemins.
+	* src/game/battlescene.cc: Changement des chemins.
+	* src/game/block.hh: Changement des chemins.
+	* src/game/bombpowerup.hh: Changement des chemins.
+	* src/game/classicbomb.hh: Changement des chemins.
+	* src/game/devilpowerup.hh: Changement des chemins.
+	* src/game/firepowerup.hh: Changement des chemins.
+	* src/game/followbomb.hh: Changement des chemins.
+	* src/game/humanplayer.hh: Changement des chemins.
+	* src/game/map.cc: Changement des chemins.
+	* src/game/menuscene.cc: Changement des chemins.
+	* src/game/minebomb.hh: Changement des chemins.
+	* src/game/minepowerup.hh: Changement des chemins.
+	* src/game/player.cc: Changement des chemins.
+	* src/game/shootpowerup.hh: Changement des chemins.
+	* src/game/speedpowerup.hh: Changement des chemins.
+	* src/game/throwpowerup.hh: Changement des chemins.
+	* src/graphic/graphicmanager.cc: Changement des chemins.
+
+2007-04-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Remplace Doxyfile par Doxyfile.in, sources au format UNIX.
+	* doc/Doxyfile: Deplace ceci... Supprime.
+	* doc/Doxyfile.in: en ceci. Nouveau.
+	* src/core/inputmanager.hh: Conversion des fichiers au format UNIX.
+	* src/game/backgroundlayer.cc: Conversion des fichiers au format UNIX.
+	* src/game/battlescene.hh: Conversion des fichiers au format UNIX.
+	* src/game/bomb.cc: Conversion des fichiers au format UNIX.
+	* src/game/downlayer.cc: Conversion des fichiers au format UNIX.
+	* src/game/gameelement.hh: Conversion des fichiers au format UNIX.
+	* src/game/humanplayer.cc: Conversion des fichiers au format UNIX.
+	* src/game/humanplayer.hh: Conversion des fichiers au format UNIX.
+	* src/game/layer.cc: Conversion des fichiers au format UNIX.
+	* src/game/map.cc: Conversion des fichiers au format UNIX.
+	* src/game/menuscene.cc: Conversion des fichiers au format UNIX.
+	* src/game/player.cc: Conversion des fichiers au format UNIX.
+	* src/game/player.hh: Conversion des fichiers au format UNIX.
+	* src/game/powerup.cc: Conversion des fichiers au format UNIX.
+	* src/game/uplayer.cc: Conversion des fichiers au format UNIX.
+	* src/graphic/graphicmanager.hh: Conversion des fichiers au format
+                                         UNIX.
+	* src/graphic/imageelement.cc: Conversion des fichiers au format UNIX.
+	* src/graphic/imageelement.hh: Conversion des fichiers au format UNIX.
+	* src/sound/sound.cc: Conversion des fichiers au format UNIX.
+
+	Corrige les bugs lies aux Autotools.
+	* src/bomberman.mk: Change srcdir en buildir.
+	* tests/utils/Makefile.am: Idem.
+
+2007-03-29  Thomas Moulard <thomas.moulard@gmail.com>
+
+	* trunk/*: Déplacement des fichiers dans le dossier trunk.
+	* ChangeLog: Fixe l'indentation.
+
+2007-03-25  Thomas Moulard <thomas.moulard@gmail.com>
+
+	* README: Correction des accents.
+
+2006-09-02	Jeremy R <shifty.net@free.fr>
+	* src/utils/smartpointer.hxx	: Retour à la révision 49
+
+2006-09-02	Jeremy R <shifty.net@free.fr>
+	* src/proj/Visual Studio 8/*	: création du projet VS8
+	* src/proj/CodeBlocks/twg_bomberman.cbp	: ajout du chemin vers le dossier libxml
+	* src/game/backgroundlayer.cc	: modification mineure (compatibilité VS8)
+	* src/game/layer.cc		: modification mineure (compatibilité VS8)
+	* src/game/downlayer.cc		: modification mineure (compatibilité VS8)
+	* src/game/uplayer.cc		: modification mineure (compatibilité VS8)
+	* src/game/map.cc		: modification mineure (compatibilité VS8)
+	* src/game/bomb.cc		: modification mineure (compatibilité VS8)
+	* src/game/powerup.cc		: modification mineure (compatibilité VS8)
+	* src/game/menuscene.cc		: modification mineure (compatibilité VS8)
+	* src/game/introscene.cc	: modification mineure (compatibilité VS8)
+	* src/game/battlescene.cc	: modification mineure (compatibilité VS8)
+	* src/utils/smartpointer.hxx	: SDL_FreeSurface remplace delete lorsque le pointeur est un SDL_Surface*
+	* src/sound/sound.hh		: virtualisation du destructeur pour rendre la classe polymorphe
+	* src/utils/debug.hh		: correction d'un warning dû à une redéfinition de macro
+
+2006-08-18  Elie Roudninski <liliroud@hotmail.com>
+	* src/data/img/sprite_bomberman.png : correction d'un bug dans l'image
+
+2006-08-18  Elie Roudninski <liliroud@hotmail.com>
+	* src/game/downlayer.cc : isWalkable() gere les collisions
+	* src/game/uplayer.cc : isWalkable() gere les collisions
+
+2006-08-18  Julien Bosco <drkmst@hotmail.com>
+	* src/game/backgroundlayer.cc : isWalkable() gère les collisions
+	 (avec une grosse aide de adema:) )
+
+2006-08-17  Julien Bosco <drkmst@hotmail.com>
+	* src/game/player.cc : Ajout des collisions dans move().
+
+	* src/graphic/backgroundlayer.cc : Modification de isWalkable()
+	  pour gestion des blocs de fond.
+
+2006-08-16  Julien Bosco <drkmst@hotmail.com>
+	* src/core/inputmanager.hh : Ajout de clearBuffer().
+
+	* src/graphic/player.cc : Début de l'intégration des collisions.
+
+	* src/graphic/player.hh : Ajout du paramètre BattleScene à la méthode move().
+
+2006-08-15  Julien Bosco <drkmst@hotmail.com>
+	* src/graphic/graphicmanager.hh :
+	Correction d'une erreur de frappe.
+	mapColorRGB et mapColorRGBA retourne un Uint32.
+
+	* src/graphic/imageelement.cc : Ajout de la transparence.
+
+	* src/game/player.hh : Ajout de moving_.
+				   Ajout de isMoving().
+				   Ajout de setMove().
+
+	* src/game/humanplayer.cc : Modification de play() pour corriger le bug
+					  de l'auto animation.
+					  Modification pour que move() s'occupe
+					  de faire bouger le joueur.
+
+	* src/game/player.cc : Modification de move() pour gérer les mouvements.
+				   (imcomplet et buggé pour le moment).
+
+	* src/graphic/imageelement.cc : Modification du draw() pour gestion de
+					 	l'animation.
+						Implémentation de animation_get().
+
+	* src/graphic/imageelement.hh : Ajout de animation_get().
+
+2006-08-12  Julien Bosco <drkmst@hotmail.com>
+	* src/graphic/graphicmanager.hh:
+	  Ajout de setTransparentKey().
+	Ajout de mapColorRGB().
+	Ajout de mapColorRGBA().
+
+2006-08-09  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/sound/map.cc: Ajout de isWalkable().
+
+	* src/src/layer.hh: Ajout de isWalkable en virtual.
+
+2006-08-07 Damien Lesage <dlesage@et.esiea-ouest.fr>
+
+	* src/game/*powerup.hh : Ajout du booléen de retour sur la méthode take().
+
+	* src/game/*powerup.cc : Prise en compte du booléen retourné sur les
+							 méthodes takes().
+
+	* src/game/player.hh : Ajout de l'attribut privée booléen mine_.
+						   Ajout des méthodes setMine() et getMine().
+
+	* src/game/player.cc : Programmation des méthodes setMine() et getMine().
+
+2006-08-07  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/sound/sound.hh: Remplacement de #include "SDL/SDL_Mixer.h"
+	  par #include <SDL/SDL_mixer.h>
+
+	* src/src/makefile.*: Ajout de la librarie SDL_mixer.
+
+2006-08-07 Ulderic Kibongui <ulderic.k@free.fr>
+
+	* src/sound/sound.hh: Ajout des prototypes des fonctions :
+	  setType(), pause(), stop() et resume().
+	  Ajout de la variable soundType.
+
+	  * src/sound/sound.cc: Ajout de la gestion du son.
+
+2006-08-06  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/game/menuscene.cc: Mise de isKeyRelease() comme déclancheur de
+	  mouvement dans la scène menu.
+
+2006-08-06 Gabriel Huau <countag@wanadoo.com>
+
+	* src/game/humanplayer.cc: Gestion du mouvement du joueur humain.
+
+	* src/game/humanplayer.hh: Gestion du mouvement du joueur humain.
+
+2006-08-05 Thomas Moulard <thomas.moulard@gmail.com>
+
+	* src/game/humanplayer.cc: Gestion du mouvement du joueur humain.
+
+	* src/game/humanplayer.hh: Gestion du mouvement du joueur humain.
+
+	* src/game/player.cc: Gestion du mouvement du joueur humain.
+
+	* src/game/player.hh: Gestion du mouvement du joueur humain.
+
+2006-08-05 Damien Lesage <dlesage@et.esiea-ouest.fr>
+
+	* src/game/powerup.cc : Gestion de tous les PowerUp dans le chargement
+	  à partir de la méthode loadFromXml().
+	* src/game/powerup.hh : L'attribut taken_ devient protected au lieu de
+	  private.
+	* src/game/bomb.cc : Gestion de toutes les Bomb dans le chargement
+	  à partir de la méthode loadFromXml().
+	* src/game/*powerup.hh : Ajout des méthodes render(), loadFromXml() et
+	  take().
+	* src/game/*powerup.cc : Programmation des méthodes render(),
+	  loadFromXml() et take().
+	* src/game/*bomb.cc : Programmation des méthodes loadFromXml().
+
+2006-08-04  Thomas Moulard <thomas.moulard@gmail.com>
+
+	* Ajout de SDL_Mixer au projet Windows.
+
+2006-08-04  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/core/configmanager.(cc|hh): Ajout de la méthode
+	  getstringValue() et création de la gestion du singleton.
+
+2006-08-04  Ulderic Kibongui <ulderic.k@free.fr>
+
+	* src/sound/soundmanager.hh: Ajout de 3 variables de gestion de la
+	quatilé du son.
+	* src/sound/soundmanager.cc: Ajout des procédures d'initialisation
+	et de fermeture de SDL_Mixer
+
+2006-08-04  Cyril Kern <deathangel67300@hotmail.com>
+
+	* inputmanager.h : correction temporaire du static const unsigned
+	max_keys à la valeur 512
+	à recorriger avec le nombre exact de touches max.
+	Valeur précédente 255, mais insuffisante pour les touches
+	directionnelles (274 et plus)
+
+
+2006-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* Ajout des fonctions render() de tous les layer.
+
+2006-08-03  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/game/battlescene.cc: Ajout des méthodes showCompteur() et
+	 showPause().
+
+	* src/core/configmanager.(cc|hh): Ajout des méthodes getNode(),
+	  loadConfiguration(), getIntegerValue() et getBooleanValue().
+
+	* src/data/config.xml: Ajout du fichier (Nouveau).
+
+2006-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/game/backgroundlayer.cc: Ajout de loadFromXml.
+
+2006-08-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* Ajout des fonctions loadFromXml principales.
+
+	* src/utils/debug.cc: Correction d'un problème
+	empêchant le log dans un fichier.
+
+2006-08-03  Ulderic Kibongui <ulderic.k@free.fr>
+
+	* src/graphic/graphicmanager.cc: Rajout du flag
+	SDL_INIT AUDIO dans les paramètres d'initialisation de SDL .
+
+2006-08-03  Damien Lesage <dlesage@et.esiea-ouest.fr>
+
+	* src/game/gameelement.hh: Changement de nom des paramètres du
+	constructeur pour respecter le coding style.
+
+	* src/game/gameelement.cc: Programmation de la méthode
+	loadFromXml(TiXmlElement*).
+
+	* src/game/block.cc: Programmation de la méthode
+	loadFromXml(TiXmlElement*).
+
+	* src/game/powerup.cc: Programmation de la méthode
+	loadFromXml(TiXmlElement*).
+
+	* src/game/bomb.cc: Programmation de la méthode
+	loadFromXml(TiXmlElement*).
+
+	* src/game/classicbomb.cc: Programmation de la méthode
+	loadFromXml(TiXmlElement*).
+
+	* src/game/bombpowerup.hh: Ajout des méthodes virtual void render() et
+	BombPowerUp* loadFromXml(TiXmlElement*).
+
+	* src/game/bombpowerup.cc:
+	Programmation de la méthode loadFromXml(TiXmlElement*).
+	Programmation des méthodes render() et loadFromXml(TiXmlElement*).
+
+2006-08-03  Cyril Kern <deathangel67300@hotmail.com>
+
+	* src/Player.cc(.hh) : Ajout de deux fonctions pour récupérer la
+	position du joueur
+
+2006-08-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/graphic/imageelement.cc: Suppression d'une fuite mémoire.
+
+	* src/graphic/textelement.cc: Suppression d'une fuite mémoire.
+
+	* src/Makefile.am: Ajout de TinyXML.
+
+2006-08-03  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/core/inputmanager.hh:
+	* src/core/inputmanager.cc: Ajout de la méthode isKeyPressed(),
+	  onKeyUp(), onKeyDown() et setMousePosition()
+
+	* src/game/menuscene.cc: Ajout de l'interface du menu et de la gestion
+	  des touches.
+
+	* src/game/introscene.cc: Ajout du fondu et de la gestion du ESC pour
+	  passer au menu.
+
+	* src/graphic/textelement.hh: Ajout des méthodes getWidth() et
+	  getHeight()
+
+	* src/graphic/imageelement.hh: Ajout de la méthode setAlpha()
+
+	* src/game/*scene.(hh|cc): Changement de la valeur de retour de play()
+	  de void vers int.
+
+	* src/graphic/application.hh: Ajout de l'initialisation de battlescene
+
+2006-08-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/graphic/imageelement.cc: Correction de la gestion des
+	animations.
+
+	* src/utils/timemanager.cc: Correction du mode pause,
+	coding style.
+
+2006-08-02  Cyril Kern "DeathAngel" <deathangel67300@hotmail.com>
+
+	* src/game/battlescene.cc :
+	Ajout d'un compteur de départ.
+	Mode pause.
+	Condition d'arret de jeu.
+
+2006-08-02  Julien "Corkus" Bosco <drkmst@hotmail.com>
+
+	* Modification du constructeur de imageelement
+	pour gérer les animations.
+
+2006-08-02  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/core/graphicmanager.hh: Ajout de la scène menu.
+
+	* src/game/menuscene.cc: Ajout d'un début d'interface pour le menu très
+	rudimentaire.
+
+	* src/data/img/logo_bm5.png: Ajout du logo Bomberman 5.
+
+	* src/data/img/logo_gcn.png: Ajout du logo GCN.
+
+2006-08-02  Julien "Corkus" Bosco <drkmst@hotmail.com>
+
+	* src/graphic/graphicmanager.hh: Ajout d'une surchage
+	à la fonction blitToScreen().
+
+	* src/graphic/imageelement.cc: Implémentation de animation_play(),
+	animation_pause(), animation_stop().
+
+	* src/graphic/imageelement.cc: Modification de la fonction draw()
+	pour la gestion des sprites animés.
+
+2006-08-02  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/graphic/graphicmanager.hh: Ajout de fill() et fillScreen().
+
+	* src/graphic/graphicmanager.cc: Affichage des fps.
+
+	* src/utils/timemanager.hh: Ajout de TimeElapsed().
+
+	* src/game/introscene.hh: Mise du background en blanc et activation de
+	l'affichage des fps.
+
+	* src/game/menuscene.cc: Création des fonctions de base d'une scène.
+
+2006-08-02  Julien "Corkus" Bosco <drkmst@hotmail.com>
+	* src/utils/timemanager.hh: Ajout de la méthode reset().
+	* src/utils/timemanager.cc: Implémentation de la méthode reset().
+
+2006-08-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* Gestion des fontes.
+
+2006-08-02  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/game/introscene.cc: Ajout du logo TWG.
+
+	* src/data/img/logo_twg.png: Ajout de l'image (Nouveau).
+
+	* src/graphic/imageelement.hh: Ajout de getWidth() et getHeight().
+
+2006-08-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/graphic/graphicmanager.cc: Ajout de SDL_ttf.
+
+	* src/utils/timemanager.cc (utils): Correction d'un bug dans
+	le delayUntilEnd().
+
+	* src/core/resourcemanager.cc: Ajout d'un message d'erreur complet.
+
+2006-08-02 Damien Lesage <dlesage@et.esiea-ouest.fr>
+
+	* src/game/gameelement.hh: Ajout du constructeur protected GameElement()
+
+	* src/game/gameelement.cc: Modification des constructeurs
+							   Modification de la surchage de l'opérateur =
+
+	* src/game/bomb.hh: Ajout du paramètre const char* filename au
+	constructeur
+	Suppression de l'image BOMB_DATA_IMG
+	Ajout de la méthode loadFromXml()
+
+	* src/game/bomb.cc: Inclusion de la librairie <cassert>
+	Modification des constructeurs
+	Modification de la surcharge de l'opérateur =
+	Ajout de la méthode loadFromXml()
+
+	* src/game/powerup.hh: Ajout de la méthode loadFromXml
+
+	* src/game/powerup.cc: Inclusion de la librairie <cassert>
+	Modification des constructeurs
+	Modification de la surcharge de l'opérateur =
+	Ajout de la méthode loadFromXml()
+
+	* src/game/followbomb.hh: Ajout de l'image FOLLOW_BOMB_DATA_IMG
+	Ajout de la méthode render()
+	Ajout de la méthode loadFromXml()
+
+	* src/game/followbomb.cc: Modification de l'appel
+	du constructeur parent Bomb(const char* filename)
+	Ajout de la méthode render()
+	Ajout de la méthode loadFromXml()
+
+	* src/game/minebomb.hh: Ajout de l'image MINE_BOMB_DATA_IMG
+	Ajout de la méthode render()
+	Ajout de la méthode loadFromXml()
+
+	* src/game/minebomb.cc: Modification de l'appel du constructeur parent
+	Bomb(const char* filename)
+	Ajout de la méthode render()
+	Ajout de la méthode loadFromXml()
+
+	* src/game/classicbomb.hh: Ajout de l'image CLASSIC_BOMB_DATA_IMG
+	Ajout de la méthode render()
+	Ajout de la méthode loadFromXml()
+
+	* src/game/classicbomb.cc: Modification de l'appel du
+	constructeur parent Bomb(const char* filename)
+	Ajout des méthodes
+
+2006-08-01  Julien "Corkus" Bosco <drkmst@hotmail.com>
+
+	* src/utils/timemanager.hh: Ajout des méthodes pause() et resume()
+	et des variables TimeLeftWhenPaused_ et m_bIsPaused.
+
+	* src/utils/timemanager.cc: Implémentation des méthodes pause() et
+	resume(). Modification de la méthode is_time().
+
+	* src/game/player.hh: Correction de la fonction virtuelle play().
+
+	* src/game/humanplay.cc: Implémentation de la fonction play().
+
+2006-08-01  Alexandre D'Eschambeault  <xel1045@gmail.com>
+
+	* src/graphic/graphicmanager.hh: Ajout de getScreenWidth(),
+		  getScreenHeight() et implémentation de la normalisation des
+	  frames à l'aide de TimeManager.
+
+	* src/utils/timemanager.cc: Ajout de DelayUtilEnd()
+
+	* src/utils/timemanager.hh: Ajout de delay() et TimeLeft()
+
+2006-08-01  Julien "Corkus" Bosco < drkmst@hotmail.com>
+
+	* src/graphic/imageelement.hh: Ajout des enum de direction.
+
+	* src/graphic/imageelement.hh: Ajout de la méthode SetPostion.
+
+	* src/graphic/imageelement.cc: Modification du constructeur.
+
+	* src/graphic/imageelement.cc: Implémentation de la méthode
+	animation_play().
+
+2006-08-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/utils/timemanager.cc: Implémentation de TimeManager.
+
+2006-08-01  Cyril Kern <deathangel67300@hotmail.com>
+
+	* modification .cbp pour prise en charge de SDL_Image
+
+2006-08-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/sound/Makefile.am: Ajout de sound.cc
+
+	* src/graphic/visualelement.hh: Ajout de la possibilité de cacher
+	un élément visuel.
+
+	* src/graphic/introscrene.cc: Ajout de l'affichage d'une image.
+
+	* src/data/img/fixme.png: Image temporaire pour les classes (Nouveau).
+
+	* src/Makefile.am: ajout de SDL_image.
+
+	* src/graphic/imageelement.cc: Implémentation de draw()
+
+	* src/graphic/graphicmanager.cc: Ajout de SDL_Image.
+
+	* Correction des relations ImageElement/GameElement.
+
+	* src/utils/smartpointer.hxx: Correction de operator->.
+
+	* src/utils/smartpointer.hh: Correction de operator->.
+
+	* Correction du code afin de supprimer tous les avertissements.
+
+2006-07-31  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* Ajout de prototypes divers afin que la compilation
+	Windows fonctionne.
+
+	* src/proj/CodeBlocks/twg_bomberman.cbp: Fichier projet (Nouveau).
+
+	* src/proj/CodeBlocks/README.txt: Lisez-moi concernant la
+	configuration de l'environnement (Nouveau).
+
+	* src/game/player.cc: Correction du code.
+
+	* src/game/player.cc: Mise à la norme.
+
+2006-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/game/uplayer.hh: Ajout de TinyXml.
+
+	* src/game/downlayer.hh: Ajout de TinyXml.
+
+	* src/game/gameelement.hh: Ajout de TinyXml.
+
+	* src/game/downlayer.cc: Ajout de TinyXml.
+
+	* src/game/backgroundlayer.hh: Ajout de TinyXml.
+
+	* src/bomberman.mk: Ajout de TinyXml au Makefile.
+
+	* lib/tinyxml: Ajout de la bibliothèque TinyXml (Nouveau).
+
+2006-07-30  Cyril Kern "DeathAngel" <deathangel67300@hotmail.com>
+
+	* src/Sound/sound.hh: Correction du header des fonctions Sound
+	operator=
+	void play()
+
+	* src/game/endofbattlescene.hh: Ajout d'une ligne à la fin pour
+	suppression d'un warning
+
+
+2006-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/core/inputmanager.cc: Implémentation de la fonction décrite
+	ci-dessous.
+
+	* src/core/inputmanager.hh: Ajout de la fonction gérant
+	les événements spéciaux traités uniformément durant l'execution
+	du programme.
+
+	* src/core/application.cc: Appel de la scène IntroScene.
+
+	* src/graphic/graphicmanager.cc: Ajout de l'initialisation de SDL.
+
+2006-07-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* tests/utils/Makefile.am: Ajout des tests (Nouveau).
+
+	* tests/Makefile.am (SUBDIRS): Ajout des tests (Nouveau).
+
+	* tests/utils/test1.cc: Ajout du test1 pour les
+	SmartPointer (Nouveau).
+
+	* src/utils/smartpointer.hxx: Implémentation des SmartPointer.
+
+2006-07-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/utils/Makefile.am: Ajout de debug.cc au fichier.
+
+	* src/utils/debug.hh: Ajout du squelette (Nouveau).
+
+	* README: Ajout de la liste des paquets nécessaires pour
+	la compilation.
+
+2006-07-25  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* src/utils/smartpointer.hh: Ajout des signatures dans la
+	classe.
+
+	* tools/valgrind.sh: Ajout du script d'execution de valgrind
+	(Nouveau).
+
+	* tools/gdb.sh: Ajout du script d'execution de gdb
+	(Nouveau).
+
+	* src/utils/smartpointer.hh: DispatchPolicy_t sort de la classe.
+
+	* src/utils/smartpointer.hxx: Ajout du fichier (Nouveau).
+
+	* src/utils/timemanager.hh: Mise en page.
+
+	* src/core/resourcemanager.hh: Utilisation du type DispatchPolicy_t.
+
+	* src/core/application.hh: Mise en page.
+
+	* src/core/resourcemanager.cc: Utilisation du type DispatchPolicy_t.
+
+	* src/core/application.cc: Mise en page.
+
+	* src/core/inputmanager.hh: Mise en page.
+
+	* src/core/inputmanager.cc: Mise en page.
+
+	* src/core/configmanager.hh: Mise en page.
+
+	* Modification des scripts autotools (s/util/utils/).
+
+	* Déplace le dossier data dans src/data.
+
+2006-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* TODO: Ajout du fichier TODO (Nouveau).
+
+	* data/map/sample1.xml: Changement du sample pour
+	associer une image aux blocks.
+
+2006-07-22  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* data/map/sample1.xml: Ajout d'une carte d'exemple simple
+	(Nouveau).
+
+	* Documentation de l'ensemble du code et ajout des méthodes.
+
+	* src/util/smartpointer.hh (Util): Ajout du squelette (Nouveau).
+
+	* src/game/player.hh (Game): Documentation de la classe.
+
+	* Ajout des attributs liés aux classes représentées
+	sur le diagramme UML.
+
+	* Ajout des fichiers sources aux différents Makefile.am
+	et ajout des héritages.
+
+	* src/game/uplayer.hh : Ajout du squelette (Nouveau).
+
+	* src/game/block.hh : Ajout du squelette (Nouveau).
+
+	* src/game/backgroundlayer.cc : Ajout du squelette (Nouveau).
+
+	* src/game/layer.cc : Ajout du squelette (Nouveau).
+
+	* src/game/downlayer.hh : Ajout du squelette (Nouveau).
+
+	* src/game/uplayer.cc : Ajout du squelette (Nouveau).
+
+	* src/game/block.cc : Ajout du squelette (Nouveau).
+
+	* src/game/downlayer.cc : Ajout du squelette (Nouveau).
+
+	* src/game/backgroundlayer.hh : Ajout du squelette (Nouveau).
+
+	* src/game/layer.hh : Ajout du squelette (Nouveau).
+
+	* src/graphic/rawimage.cc : Suppresion du fichier.
+
+	* src/graphic/imageelement.cc : Ajout du squelette (Nouveau).
+
+	* src/graphic/rawimage.hh : Suppresion du fichier.
+
+	* src/graphic/imageelement.hh : Ajout du squelette (Nouveau).
+
+	* src/graphic/sprite.cc : Suppresion du fichier.
+
+	* src/graphic/sprite.hh : Suppresion du fichier.
+
+	* src/util/timemanager.hh : Ajout du squelette (Nouveau).
+
+	* src/util/timemanager.cc : Ajout du squelette (Nouveau).
+
+2006-07-21  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* doc/handbook/modelisation.tex : Ajout de la description des
+	VisualElement vs GameElement.
+
+	* doc/handbook/modelisation.tex : Ajout de la gestion mémoire et des
+	cartes.
+
+	* doc/handbook/handbook.tex: Ajout du handbook.
+
+	* COPYING: Ajout du texte de la GPL.
+
+	* AUTHORS: Ajout des deux premiers mentors.
+
+	* src/game/classicbomb.hh (Game): Correction de la définition
+	de la classe ClassicBomb, elle hérite de Bomb.
+
+	* src/core/application.cc (Core): Ajout des implémentations
+	du constructeur, constructeur par copie et du destructeur.
+
+	* src/doc.hh: Ajout de la page principale de la documentation
+	Doxygen du projet.
+
+	* tools/GenerateSkeleton.sh : Correction d'un bug (#define oublié).
+
+	* src/sound/soundmanager.hh (Sound) : Ajout du squelette (Nouveau).
+
+	* src/sound/soundmanager.cc (Sound) : Ajout du squelette (Nouveau).
+
+	* src/game/menuscene.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/player.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/scene.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/devilpowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/throwpowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/powerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/bombpowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/minepowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/followbomb.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/shootpowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/bomb.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/endofbattlescene.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/iaplayer.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/firepowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/menuscene.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/introscene.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/devilpowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/throwpowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/map.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/classicbomb.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/speedpowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/gameelement.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/humanplayer.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/minebomb.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/followbomb.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/battlescene.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/endofbattlescene.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/player.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/iaplayer.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/scene.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/firepowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/introscene.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/powerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/bombpowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/map.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/classicbomb.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/speedpowerup.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/gameelement.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/minepowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/humanplayer.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/minebomb.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/shootpowerup.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/battlescene.cc (Game) : Ajout du squelette (Nouveau).
+
+	* src/game/bomb.hh (Game) : Ajout du squelette (Nouveau).
+
+	* src/graphic/rawimage.cc (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/visualelement.cc (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/textelement.cc (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/sprite.hh (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/graphicmanager.hh (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/sprite.cc (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/rawimage.hh (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/visualelement.hh (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/graphicmanager.cc (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/graphic/textelement.hh (Graphic) : Ajout du squelette (Nouveau).
+
+	* src/core/resourcemanager.hh (Core): Ajout des
+	constructeurs/destructeurs, operateur "="
+	dans l'en-tête.
+
+	* src/core/inputmanager.hh (Core): Idem.
+
+	* src/core/configmanager.hh (Core): Idem.
+
+	* src/core/resourcemanager.hh (Core): Ajout du ResourceManager (Nouveau).
+
+	* src/core/inputmanager.hh (Core): Ajout de l'InputManager (Nouveau).
+
+	* src/core/configmanager.hh (Core): Ajout du ConfigManager (Nouveau).
+
+	* tools/GenerateSkeleton.sh: Ajout d'un script pour générer
+	des fichiers squelettes (Nouveau).
+
+2006-07-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* Ajout des paquets, des makefile.am et paramétrage des autotools.
+
+2006-07-18  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* doc/Makefile: Ajout du Makefile générant la documentation.
+
+	* doc/Doxyfile: Ajout du fichier de configuration Doxygen.
+
+	* Initialisation du svn, ajout des fichiers autoconf et
+	du fichier main.cc
+
